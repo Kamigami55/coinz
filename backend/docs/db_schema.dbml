@@ -1,0 +1,107 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+Table users {
+  id integer [pk, increment]
+  name varchar
+  email varchar [unique]
+  password varchar
+  created_at timestamp
+}
+
+Table ledgers_users {
+  ledger_id integer [pk]
+  user_id integer [pk]
+  created_at timestamp
+}
+
+Table ledgers {
+  id integer [pk, increment]
+  name varchar
+  created_at timestamp
+  user_id integer
+}
+
+Ref: "ledgers_users"."ledger_id" > "ledgers"."id"
+Ref: "ledgers_users"."user_id" > "users"."id"
+
+Table currencies {
+  id integer [pk, increment]
+  name varchar
+}
+
+Table currency_conversions {
+  id integer [pk, increment]
+  from_currency_id integer
+  to_currency_id integer
+  rate double
+  updated_at timestamp
+}
+
+Ref: "currencies"."id" < "currency_conversions"."from_currency_id"
+Ref: "currencies"."id" < "currency_conversions"."to_currency_id"
+
+Table transactions {
+  id integer [pk, increment]
+  ledger_id integer
+  amount double
+  currency_id integer
+  name varchar
+  description varchar
+  category_id integer
+  created_at timestamp
+  updated_at timestamp
+}
+
+Table categories {
+  id integer [pk, increment]
+  name varchar
+  color varchar
+  icon varchar
+  created_at timestamp
+}
+
+Ref: "transactions"."ledger_id" > "ledgers"."id"
+Ref: "transactions"."currency_id" > "currencies"."id"
+Ref: "transactions"."category_id" > "categories"."id"
+
+Table recurring_bills {
+  id integer [pk, increment]
+  ledger_id integer
+  amount double
+  currency_id integer
+  name varchar
+  description varchar
+  interval_days integer
+  start_date timestamp
+  end_date timestamp
+  category_id integer
+  created_at timestamp
+  updated_at timestamp
+  deleted_at timestamp
+}
+
+Ref: "recurring_bills"."ledger_id" > "ledgers"."id"
+Ref: "recurring_bills"."currency_id" > "currencies"."id"
+Ref: "recurring_bills"."category_id" > "categories"."id"
+
+Table budgets {
+  id integer [pk, increment]
+  ledger_id integer
+  amount double
+  currency_id integer
+  name varchar
+  description varchar
+  category_id integer
+  created_at timestamp
+}
+
+Table user_settings {
+  id integer [pk, increment]
+  user_id integer
+  default_currency_id integer
+  created_at timestamp
+}
+
+Ref: "user_settings"."user_id" - "users"."id"
+Ref: "user_settings"."default_currency_id" > "currencies"."id"
