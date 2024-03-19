@@ -41,6 +41,9 @@ INSTALLED_APPS = [
 
     # Django REST Framework
     'rest_framework',
+
+    # Custom
+    'coinz_api',
 ]
 
 MIDDLEWARE = [
