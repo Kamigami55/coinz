@@ -9,17 +9,16 @@ Table users {
   created_at timestamp
 }
 
-Table ledgers_users {
-  ledger_id integer [pk]
-  user_id integer [pk]
-  created_at timestamp
-}
-
 Table ledgers {
   id integer [pk, increment]
   name varchar
   created_at timestamp
-  user_id integer
+}
+
+Table ledgers_users {
+  ledger_id integer [pk]
+  user_id integer [pk]
+  created_at timestamp
 }
 
 Ref: "ledgers_users"."ledger_id" > "ledgers"."id"
@@ -27,7 +26,10 @@ Ref: "ledgers_users"."user_id" > "users"."id"
 
 Table currencies {
   id integer [pk, increment]
-  name varchar
+  name varchar [unique]
+  abbreviation varchar [unique]
+  symbol varchar
+  icon varchar
 }
 
 Table currency_conversions {
@@ -51,7 +53,10 @@ Table transactions {
   category_id integer
   created_at timestamp
   updated_at timestamp
+  recurring_bill_id integer [null]
 }
+
+Ref: "transactions"."recurring_bill_id" > "recurring_bills"."id"
 
 Table categories {
   id integer [pk, increment]
@@ -59,6 +64,7 @@ Table categories {
   color varchar
   icon varchar
   created_at timestamp
+  updated_at timestamp
 }
 
 Ref: "transactions"."ledger_id" > "ledgers"."id"
@@ -78,29 +84,18 @@ Table recurring_bills {
   category_id integer
   created_at timestamp
   updated_at timestamp
-  deleted_at timestamp
 }
 
 Ref: "recurring_bills"."ledger_id" > "ledgers"."id"
 Ref: "recurring_bills"."currency_id" > "currencies"."id"
 Ref: "recurring_bills"."category_id" > "categories"."id"
 
-Table budgets {
-  id integer [pk, increment]
-  ledger_id integer
-  amount double
-  currency_id integer
-  name varchar
-  description varchar
-  category_id integer
-  created_at timestamp
-}
-
 Table user_settings {
   id integer [pk, increment]
   user_id integer
   default_currency_id integer
   created_at timestamp
+  updated_at timestamp
 }
 
 Ref: "user_settings"."user_id" - "users"."id"
