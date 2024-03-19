@@ -353,3 +353,6 @@ tags
 [._]*.un~
 
 # End of https://www.toptal.com/developers/gitignore/api/nextjs,python,django,macos,vim
+
+# Custom
+.my_pgpass
