@@ -24,12 +24,21 @@ class CurrencyConversion(models.Model):
     from_currency = models.ForeignKey(Currency, related_name='conversions_from', on_delete=models.CASCADE)
     to_currency = models.ForeignKey(Currency, related_name='conversions_to', on_delete=models.CASCADE)
     rate = models.FloatField()
-    updated_at = models.DateTimeField()
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Category(models.Model):
     name = models.CharField(max_length=255)
     color = models.CharField(max_length=255)
     icon = models.CharField(max_length=255)
+
+    EXPENSE = 'EXPENSE'
+    INCOME = 'INCOME'
+    CATEGORY_TYPES = [
+        (EXPENSE, 'Expense'),
+        (INCOME, 'Income'),
+    ]
+    type = models.CharField(max_length=7, choices=CATEGORY_TYPES, default=EXPENSE)
+
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

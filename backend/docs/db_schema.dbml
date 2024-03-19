@@ -60,6 +60,7 @@ Ref: "transactions"."recurring_bill_id" > "recurring_bills"."id"
 
 Table categories {
   id integer [pk, increment]
+  type varchar
   name varchar
   color varchar
   icon varchar

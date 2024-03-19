@@ -1,0 +1,26 @@
+[
+  {
+    "model": "coinz_api.category",
+    "pk": 1,
+    "fields": {
+      "name": "Expense",
+      "color": "red",
+      "icon": "💸",
+      "type": "EXPENSE",
+      "created_at": "2024-03-19T04:56:00.000Z",
+      "updated_at": "2024-03-19T04:56:00.000Z"
+    }
+  },
+  {
+    "model": "coinz_api.category",
+    "pk": 2,
+    "fields": {
+      "name": "Income",
+      "color": "green",
+      "icon": "💰",
+      "type": "INCOME",
+      "created_at": "2024-03-19T04:56:00.000Z",
+      "updated_at": "2024-03-19T04:56:00.000Z"
+    }
+  }
+]

@@ -1,0 +1,62 @@
+[
+  {
+    "model": "coinz_api.currencyconversion",
+    "pk": 1,
+    "fields": {
+      "from_currency": 1,
+      "to_currency": 2,
+      "rate": 1.35,
+      "updated_at": "2024-03-19T04:56:00.000Z"
+    }
+  },
+  {
+    "model": "coinz_api.currencyconversion",
+    "pk": 2,
+    "fields": {
+      "from_currency": 1,
+      "to_currency": 3,
+      "rate": 31.73,
+      "updated_at": "2024-03-19T04:56:00.000Z"
+    }
+  },
+  {
+    "model": "coinz_api.currencyconversion",
+    "pk": 3,
+    "fields": {
+      "from_currency": 2,
+      "to_currency": 1,
+      "rate": 0.74,
+      "updated_at": "2024-03-19T04:56:00.000Z"
+    }
+  },
+  {
+    "model": "coinz_api.currencyconversion",
+    "pk": 4,
+    "fields": {
+      "from_currency": 2,
+      "to_currency": 3,
+      "rate": 23.43,
+      "updated_at": "2024-03-19T04:56:00.000Z"
+    }
+  },
+  {
+    "model": "coinz_api.currencyconversion",
+    "pk": 5,
+    "fields": {
+      "from_currency": 3,
+      "to_currency": 1,
+      "rate": 0.03,
+      "updated_at": "2024-03-19T04:56:00.000Z"
+    }
+  },
+  {
+    "model": "coinz_api.currencyconversion",
+    "pk": 6,
+    "fields": {
+      "from_currency": 3,
+      "to_currency": 2,
+      "rate": 0.04,
+      "updated_at": "2024-03-19T04:56:00.000Z"
+    }
+  }
+]

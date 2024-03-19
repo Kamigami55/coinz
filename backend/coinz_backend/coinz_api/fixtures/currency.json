@@ -1,0 +1,32 @@
+[
+  {
+    "model": "coinz_api.currency",
+    "pk": 1,
+    "fields": {
+      "name": "US Dollar",
+      "abbreviation": "USD",
+      "symbol": "$",
+      "icon": "🇺🇸"
+    }
+  },
+  {
+    "model": "coinz_api.currency",
+    "pk": 2,
+    "fields": {
+      "name": "Canadian Dollar",
+      "abbreviation": "CAD",
+      "symbol": "C$",
+      "icon": "🇨🇦"
+    }
+  },
+  {
+    "model": "coinz_api.currency",
+    "pk": 3,
+    "fields": {
+      "name": "New Taiwan Dollar",
+      "abbreviation": "NTD",
+      "symbol": "$",
+      "icon": "🇹🇼"
+    }
+  }
+]
