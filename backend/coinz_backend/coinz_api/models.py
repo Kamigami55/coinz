@@ -1,10 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-class User(models.Model):
-    name = models.CharField(max_length=255)
-    email = models.EmailField(unique=True, db_index=True)
-    password = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
+class User(AbstractUser):
+    pass
 
 class Ledger(models.Model):
     name = models.CharField(max_length=255)

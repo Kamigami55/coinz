@@ -1,4 +1,6 @@
-from django.contrib.auth.models import Group, User
+from django.contrib.auth.models import Group
+# import my custom user model
+from coinz_api.models import User
 from rest_framework import permissions, viewsets
 
 from coinz_api.serializers import UserSerializer, GroupSerializer
