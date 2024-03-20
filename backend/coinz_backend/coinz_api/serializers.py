@@ -4,7 +4,7 @@ from coinz_api.models import User, Ledger, Currency, Category, RecurringBill, Tr
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'username', 'email']
+        fields = ['id', 'username', 'email', 'password']
 
 class LedgerSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,7 +19,7 @@ class CurrencySerializer(serializers.ModelSerializer):
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = ['id', 'name', 'color', 'icon']
+        fields = ['id', 'name', 'color', 'icon', 'type']
 
 class RecurringBillSerializer(serializers.ModelSerializer):
     class Meta:
