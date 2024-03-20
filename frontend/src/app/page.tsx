@@ -3,14 +3,13 @@
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 'use client';
 
-import * as React from 'react';
-
 import { Counter } from '@/components/Counter';
-import { useGetPokemonByNameQuery } from '@/lib/services/pokemon';
+import { useGetCurrenciesQuery } from '@/lib/services/currency';
 
 export default function Home() {
   // Using a query hook automatically fetches data and returns query values
-  const { data, error, isLoading } = useGetPokemonByNameQuery('bulbasaur');
+  // const { data, error, isLoading } = useGetPokemonByNameQuery('bulbasaur');
+  const { data, error, isLoading } = useGetCurrenciesQuery({});
   // Individual hooks are also accessible under the generated endpoints:
   // const { data, error, isLoading } = pokemonApi.endpoints.getPokemonByName.useQuery('bulbasaur')
 
@@ -32,8 +31,7 @@ export default function Home() {
             <>Loading...</>
           ) : data ? (
             <>
-              <h3>{data.species.name}</h3>
-              <img src={data.sprites.front_shiny} alt={data.species.name} />
+              <h3>{JSON.stringify(data)}</h3>
             </>
           ) : null}
         </div>
