@@ -42,6 +42,9 @@ INSTALLED_APPS = [
     # Django REST Framework
     'rest_framework',
 
+    # Basics
+    'corsheaders',
+
     # Custom
     'coinz_api',
 ]
@@ -49,6 +52,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -143,3 +147,7 @@ REST_FRAMEWORK = {
 }
 
 AUTH_USER_MODEL = 'coinz_api.User'
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+]
