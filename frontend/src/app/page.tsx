@@ -2,6 +2,8 @@
 
 import * as React from 'react';
 
+import { Counter } from '@/components/Counter';
+
 export default function Home() {
   return (
     <div className="p-12">
@@ -12,6 +14,8 @@ export default function Home() {
             Easily convert time between different timezones and compare
             overlapping time periods.
           </h2>
+
+          <Counter />
         </div>
       </div>
     </div>

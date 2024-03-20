@@ -6,6 +6,7 @@ import { Inter } from 'next/font/google';
 
 import { Footer } from '@/components/Footer';
 import { Navbar } from '@/components/Navbar';
+import { StoreProvider } from '@/components/StoreProvider';
 import { ThemeProvider } from '@/components/ThemeProvider';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -58,18 +59,20 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
-            <main className="grow">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+        <StoreProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <div className="flex min-h-screen flex-col">
+              <Navbar />
+              <main className="grow">{children}</main>
+              <Footer />
+            </div>
+          </ThemeProvider>
+        </StoreProvider>
 
         <Analytics />
       </body>
