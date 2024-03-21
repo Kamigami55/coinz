@@ -268,3 +268,4 @@ pyrightconfig.json
 # Custom
 .my_pgpass
 .pg_service.conf
+schema.yml

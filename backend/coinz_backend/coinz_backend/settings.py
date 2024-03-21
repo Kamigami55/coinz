@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 
     # Basics
     'corsheaders',
+    'drf_spectacular', # for swagger docs (auto-generated)
 
     # Custom
     'coinz_api',
@@ -143,7 +144,10 @@ REST_FRAMEWORK = {
         # 'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 10
+    'PAGE_SIZE': 10,
+
+    # For drf-spectacular (auto-generated swagger docs)
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
 }
 
 AUTH_USER_MODEL = 'coinz_api.User'
@@ -151,3 +155,10 @@ AUTH_USER_MODEL = 'coinz_api.User'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
 ]
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'Coinz API',
+    'DESCRIPTION': 'API for Coinz',
+    'VERSION': '1.0.0',
+    # OTHER SETTINGS
+}
