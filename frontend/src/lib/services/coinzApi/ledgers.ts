@@ -7,7 +7,7 @@ interface LedgerResponse {
   users: number[];
 }
 
-interface TransformedLedger {
+export interface Ledger {
   id: number;
   name: string;
   createdAt: string;
@@ -16,7 +16,7 @@ interface TransformedLedger {
 
 const coinzApiWithLedgers = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
-    getLedgers: builder.query<TransformedLedger[], void>({
+    getLedgers: builder.query<Ledger[], void>({
       query: () => `/ledgers/`,
       transformResponse: (response: { results: LedgerResponse[] }) => {
         const formattedResponse = response.results.map(
@@ -26,7 +26,7 @@ const coinzApiWithLedgers = coinzApi.injectEndpoints({
               name: ledger.name,
               createdAt: ledger.created_at,
               userIds: ledger.users,
-            } as TransformedLedger)
+            }) as Ledger
         );
         return formattedResponse;
       },

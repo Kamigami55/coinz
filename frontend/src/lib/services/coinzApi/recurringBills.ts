@@ -15,7 +15,7 @@ interface RecurringBillResponse {
   updated_at: string;
 }
 
-interface TransformedRecurringBill {
+export interface RecurringBill {
   id: number;
   ledgerId: number;
   amount: number;
@@ -32,7 +32,7 @@ interface TransformedRecurringBill {
 
 const coinzApiWithRecurringBills = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
-    getRecurringBills: builder.query<TransformedRecurringBill[], void>({
+    getRecurringBills: builder.query<RecurringBill[], void>({
       query: () => `/recurring_bills/`,
       transformResponse: (response: { results: RecurringBillResponse[] }) => {
         const formattedResponse = response.results.map(
@@ -50,7 +50,7 @@ const coinzApiWithRecurringBills = coinzApi.injectEndpoints({
               categoryId: recurringBill.category_id,
               createdAt: recurringBill.created_at,
               updatedAt: recurringBill.updated_at,
-            } as TransformedRecurringBill)
+            }) as RecurringBill
         );
         return formattedResponse;
       },

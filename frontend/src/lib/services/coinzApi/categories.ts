@@ -10,7 +10,7 @@ interface CategoryResponse {
   updated_at: string;
 }
 
-interface TransformedCategory {
+export interface Category {
   id: number;
   name: string;
   color: string;
@@ -22,7 +22,7 @@ interface TransformedCategory {
 
 const coinzApiWithCategories = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
-    getCategories: builder.query<TransformedCategory[], void>({
+    getCategories: builder.query<Category[], void>({
       query: () => `/categories/`,
       transformResponse: (response: { results: CategoryResponse[] }) => {
         const formattedResponse = response.results.map(
@@ -35,7 +35,7 @@ const coinzApiWithCategories = coinzApi.injectEndpoints({
               type: category.type,
               createdAt: category.created_at,
               updatedAt: category.updated_at,
-            } as TransformedCategory)
+            }) as Category
         );
         return formattedResponse;
       },

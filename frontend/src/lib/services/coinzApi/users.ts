@@ -8,7 +8,7 @@ interface UserResponse {
   last_name: string;
 }
 
-interface TransformedUser {
+export interface User {
   id: number;
   username: string;
   email: string;
@@ -22,7 +22,7 @@ interface GetUserQueryParams {
 
 const coinzApiWithUsers = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
-    getUser: builder.query<TransformedUser, GetUserQueryParams>({
+    getUser: builder.query<User, GetUserQueryParams>({
       query: ({ userId }) => `/users/${userId}/`,
       transformResponse: (response: UserResponse) => ({
         id: response.id,

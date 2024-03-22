@@ -8,7 +8,7 @@ interface CurrencyConversionResponse {
   updated_at: string;
 }
 
-interface TransformedCurrencyConversion {
+export interface CurrencyConversion {
   id: number;
   fromCurrencyId: number;
   toCurrencyId: number;
@@ -18,10 +18,7 @@ interface TransformedCurrencyConversion {
 
 const coinzApiWithCurrencyConversions = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
-    getCurrencyConversions: builder.query<
-      TransformedCurrencyConversion[],
-      void
-    >({
+    getCurrencyConversions: builder.query<CurrencyConversion[], void>({
       query: () => `/currency_conversions/`,
       transformResponse: (response: {
         results: CurrencyConversionResponse[];
@@ -34,7 +31,7 @@ const coinzApiWithCurrencyConversions = coinzApi.injectEndpoints({
               toCurrencyId: currencyConversion.to_currency_id,
               rate: currencyConversion.rate,
               updatedAt: currencyConversion.updated_at,
-            } as TransformedCurrencyConversion)
+            }) as CurrencyConversion
         );
         return formattedResponse;
       },

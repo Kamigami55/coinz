@@ -6,7 +6,7 @@ interface UserSettingResponse {
   updated_at: string;
 }
 
-interface TransformedUserSetting {
+export interface UserSetting {
   id: number;
   defaultCurrencyId: number;
   updatedAt: string;
@@ -18,10 +18,7 @@ interface GetUserSettingQueryParams {
 
 const coinzApiWithUserSettings = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
-    getUserSetting: builder.query<
-      TransformedUserSetting,
-      GetUserSettingQueryParams
-    >({
+    getUserSetting: builder.query<UserSetting, GetUserSettingQueryParams>({
       query: ({ userId }) => `/user_settings/${userId}/`,
       transformResponse: (response: UserSettingResponse) => ({
         id: response.id,

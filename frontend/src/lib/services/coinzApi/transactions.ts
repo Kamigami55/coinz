@@ -13,7 +13,7 @@ interface TransactionResponse {
   recurring_bill: number;
 }
 
-interface TransformedTransaction {
+export interface Transaction {
   id: number;
   ledgerId: number;
   amount: number;
@@ -48,7 +48,7 @@ interface AddTransactionRequest {
 
 const coinzApiWithTransactions = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
-    getTransactions: builder.query<TransformedTransaction[], void>({
+    getTransactions: builder.query<Transaction[], void>({
       query: () => `/transactions/`,
       transformResponse: (response: { results: TransactionResponse[] }) => {
         const formattedResponse = response.results.map(
@@ -64,16 +64,13 @@ const coinzApiWithTransactions = coinzApi.injectEndpoints({
               createdAt: transaction.created_at,
               updatedAt: transaction.updated_at,
               recurringBillId: transaction.recurring_bill,
-            } as TransformedTransaction)
+            }) as Transaction
         );
         return formattedResponse;
       },
     }),
     // =========================================================================
-    addTransaction: builder.mutation<
-      TransformedTransaction,
-      AddTransactionRequestParams
-    >({
+    addTransaction: builder.mutation<Transaction, AddTransactionRequestParams>({
       query: (params: AddTransactionRequestParams) => ({
         url: `/transactions/`,
         method: 'POST',
@@ -99,7 +96,7 @@ const coinzApiWithTransactions = coinzApi.injectEndpoints({
           createdAt: response.created_at,
           updatedAt: response.updated_at,
           recurringBillId: response.recurring_bill,
-        } as TransformedTransaction),
+        }) as Transaction,
     }),
   }),
 });

@@ -8,7 +8,7 @@ interface CurrencyResponse {
   icon: string;
 }
 
-interface TransformedCurrency {
+export interface Currency {
   id: number;
   name: string;
   abbreviation: string;
@@ -18,7 +18,7 @@ interface TransformedCurrency {
 
 const coinzApiWithCurrencies = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
-    getCurrencies: builder.query<TransformedCurrency[], void>({
+    getCurrencies: builder.query<Currency[], void>({
       query: () => `/currencies/`,
       transformResponse: (response: { results: CurrencyResponse[] }) => {
         const formattedResponse = response.results.map(
@@ -29,7 +29,7 @@ const coinzApiWithCurrencies = coinzApi.injectEndpoints({
               abbreviation: currency.abbreviation,
               symbol: currency.symbol,
               icon: currency.icon,
-            } as TransformedCurrency)
+            }) as Currency
         );
         return formattedResponse;
       },
