@@ -1,18 +1,24 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 'use client';
 
+import { useState } from 'react';
+
 import { Counter } from '@/components/Counter';
 import { useGetCategoriesQuery } from '@/lib/services/coinzApi/categories';
 import { useGetCurrenciesQuery } from '@/lib/services/coinzApi/currencies';
 import { useGetCurrencyConversionsQuery } from '@/lib/services/coinzApi/currencyConversions';
 import { useGetLedgersQuery } from '@/lib/services/coinzApi/ledgers';
 import { useGetRecurringBillsQuery } from '@/lib/services/coinzApi/recurringBills';
-import { useGetTransactionsQuery } from '@/lib/services/coinzApi/transactions';
+import {
+  useAddTransactionMutation,
+  useGetTransactionsQuery,
+} from '@/lib/services/coinzApi/transactions';
 import { useGetUserQuery } from '@/lib/services/coinzApi/users';
 import { useGetUserSettingQuery } from '@/lib/services/coinzApi/userSettings';
 
 export default function Home() {
   const userId = '1';
+
   const {
     data: currencies,
     isLoading: currenciesLoading,
@@ -54,6 +60,28 @@ export default function Home() {
     isError: recurringBillsError,
   } = useGetRecurringBillsQuery();
 
+  const [addTransactionMutation, { isLoading: addTransactionLoading }] =
+    useAddTransactionMutation();
+
+  const [ledger, setLedger] = useState<number>(1);
+  const [amount, setAmount] = useState<number>(0);
+  const [currency, setCurrency] = useState<number>(1);
+  const [name, setName] = useState<string>('');
+  const [description, setDescription] = useState<string>('');
+  const [category, setCategory] = useState<number>(1);
+
+  const handleAddTransaction = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    await addTransactionMutation({
+      ledgerId: ledger,
+      amount: Number(amount),
+      currencyId: currency,
+      name: name,
+      description: description,
+      categoryId: category,
+    });
+  };
+
   return (
     <div className="p-12">
       <div className="flex flex-col md:flex-row md:justify-between gap-6 md:items-center mb-4">
@@ -87,6 +115,76 @@ export default function Home() {
           <br />
           Recurring Bills: {JSON.stringify(recurringBills)}
         </div>
+
+        {/* A simple form to add a transaction */}
+        <form onSubmit={handleAddTransaction}>
+          <div className="flex flex-col gap-2">
+            <label htmlFor="ledger">Ledger</label>
+            <select
+              id="ledger"
+              name="ledger"
+              value={ledger}
+              onChange={(e) => setLedger(parseInt(e.target.value))}
+            >
+              {ledgers?.map((ledger) => (
+                <option key={ledger.id} value={ledger.id}>
+                  {ledger.name}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="amount">Amount</label>
+            <input
+              id="amount"
+              name="amount"
+              type="number"
+              value={amount}
+              onChange={(e) => setAmount(parseFloat(e.target.value))}
+            />
+            <label htmlFor="currency">Currency</label>
+            <select
+              id="currency"
+              name="currency"
+              value={currency}
+              onChange={(e) => setCurrency(parseInt(e.target.value))}
+            >
+              {currencies?.map((currency) => (
+                <option key={currency.id} value={currency.id}>
+                  {currency.name}
+                </option>
+              ))}
+            </select>
+            <label htmlFor="name">Name</label>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+            <label htmlFor="description">Description</label>
+            <input
+              id="description"
+              name="description"
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+            />
+            <label htmlFor="category">Category</label>
+            <select
+              id="category"
+              name="category"
+              value={category}
+              onChange={(e) => setCategory(parseInt(e.target.value))}
+            >
+              {categories?.map((category) => (
+                <option key={category.id} value={category.id}>
+                  {category.name}
+                </option>
+              ))}
+            </select>
+            <button type="submit">Add Transaction</button>
+          </div>
+        </form>
       </div>
     </div>
   );
