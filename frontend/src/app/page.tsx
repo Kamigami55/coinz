@@ -1,12 +1,16 @@
 'use client';
-
 import { Menu, Transition } from '@headlessui/react';
 import {
   EllipsisHorizontalIcon,
   PlusSmallIcon,
 } from '@heroicons/react/20/solid';
-import { Fragment, useMemo, useState } from 'react';
+import { Fragment, useMemo } from 'react';
+import { z } from 'zod';
 
+import {
+  AddTransactionForm,
+  addTransactionFormSchema,
+} from '@/components/AddTransactionForm';
 import { TransactionsTable } from '@/components/TransactionsTable';
 import { getTransactionsToDisplay } from '@/lib/helper';
 import { useGetCategoriesQuery } from '@/lib/services/coinzApi/categories';
@@ -114,23 +118,33 @@ export default function HomePage() {
   const [addTransactionMutation, { isLoading: addTransactionLoading }] =
     useAddTransactionMutation();
 
-  const [ledger, setLedger] = useState<number>(1);
-  const [amount, setAmount] = useState<number>(0);
-  const [currency, setCurrency] = useState<number>(1);
-  const [name, setName] = useState<string>('');
-  const [description, setDescription] = useState<string>('');
-  const [category, setCategory] = useState<number>(1);
-
-  const handleAddTransaction = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleAddTransaction = async (
+    values: z.infer<typeof addTransactionFormSchema>
+  ) => {
     await addTransactionMutation({
-      ledgerId: ledger,
-      amount: Number(amount),
-      currencyId: currency,
-      name: name,
-      description: description,
-      categoryId: category,
+      ledgerId: values.ledgerId,
+      amount: values.amount,
+      currencyId: values.currencyId,
+      name: values.name,
+      description: values.description,
+      categoryId: values.categoryId,
     });
+    // await addTransactionMutation.reset();
+    // await addTransactionMutation.setError(null);
+    // await addTransactionMutation.setStatus('idle');
+    // await addTransactionMutation.setData(null);
+    // await addTransactionMutation.setError(null);
+    // await addTransactionMutation.setStatus('idle');
+    // await addTransactionMutation.setData(null);
+
+    // Reset form
+    // await form.reset();
+    // await form.setError(null);
+    // await form.setStatus('idle');
+    // await form.setData(null);
+    // await form.setError(null);
+    // await form.setStatus('idle');
+    // await form.setData(null);
   };
 
   const transactionsToDisplay = useMemo(() => {
@@ -232,6 +246,16 @@ export default function HomePage() {
       </div>
 
       <div className="space-y-16 py-16 xl:space-y-20">
+        <div className="px-8">
+          <AddTransactionForm
+            currencies={currencies}
+            categories={categories}
+            ledgers={ledgers}
+            onAddTransaction={handleAddTransaction}
+            isSubmitting={addTransactionLoading}
+          />
+        </div>
+
         <TransactionsTable transactionsToDisplay={transactionsToDisplay} />
 
         {/* Recent client list*/}
