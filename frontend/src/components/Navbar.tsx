@@ -2,8 +2,8 @@
 
 import { CircleUser, Menu, Package2, Search } from 'lucide-react';
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
 
+import { ActiveLink } from '@/components/ActiveLink';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -15,12 +15,27 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Input } from '@/components/ui/input';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { cn } from '@/lib/utils';
+
+const NavbarItems = [
+  {
+    name: 'Dashboard',
+    href: '/',
+  },
+  {
+    name: 'Transactions',
+    href: '/transactions',
+  },
+  {
+    name: 'Reports',
+    href: '/reports',
+  },
+  {
+    name: 'Settings',
+    href: '/settings',
+  },
+];
 
 export function Navbar() {
-  const pathname = usePathname();
-  const isActive = (path: string) => pathname === path;
-
   return (
     <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -31,44 +46,17 @@ export function Navbar() {
           <Package2 className="h-6 w-6" />
           <span className="sr-only">Coinz</span>
         </Link>
-        <Link
-          href="/"
-          className={cn(
-            'transition-colors hover:text-foreground',
-            isActive('/') ? 'text-foreground' : 'text-muted-foreground'
-          )}
-        >
-          Dashboard
-        </Link>
-        <Link
-          href="/transactions"
-          className={cn(
-            'transition-colors hover:text-foreground',
-            isActive('/transactions')
-              ? 'text-foreground'
-              : 'text-muted-foreground'
-          )}
-        >
-          Transactions
-        </Link>
-        <Link
-          href="/reports"
-          className={cn(
-            'transition-colors hover:text-foreground',
-            isActive('/reports') ? 'text-foreground' : 'text-muted-foreground'
-          )}
-        >
-          Reports
-        </Link>
-        <Link
-          href="/settings"
-          className={cn(
-            'transition-colors hover:text-foreground',
-            isActive('/settings') ? 'text-foreground' : 'text-muted-foreground'
-          )}
-        >
-          Settings
-        </Link>
+        {NavbarItems.map((item) => (
+          <ActiveLink
+            key={item.name}
+            href={item.href}
+            className="transition-colors hover:text-foreground"
+            activeClassName="text-foreground"
+            inactiveClassName="text-muted-foreground"
+          >
+            {item.name}
+          </ActiveLink>
+        ))}
       </nav>
 
       <Sheet>
@@ -87,48 +75,18 @@ export function Navbar() {
               <Package2 className="h-6 w-6" />
               <span className="sr-only">Coinz</span>
             </Link>
-            <Link
-              href="/"
-              className={cn(
-                'transition-colors hover:text-foreground',
-                isActive('/') ? 'text-foreground' : 'text-muted-foreground'
-              )}
-            >
-              Dashboard
-            </Link>
-            <Link
-              href="/transactions"
-              className={cn(
-                'transition-colors hover:text-foreground',
-                isActive('/transactions')
-                  ? 'text-foreground'
-                  : 'text-muted-foreground'
-              )}
-            >
-              Transactions
-            </Link>
-            <Link
-              href="/reports"
-              className={cn(
-                'transition-colors hover:text-foreground',
-                isActive('/reports')
-                  ? 'text-foreground'
-                  : 'text-muted-foreground'
-              )}
-            >
-              Reports
-            </Link>
-            <Link
-              href="/settings"
-              className={cn(
-                'transition-colors hover:text-foreground',
-                isActive('/settings')
-                  ? 'text-foreground'
-                  : 'text-muted-foreground'
-              )}
-            >
-              Settings
-            </Link>
+
+            {NavbarItems.map((item) => (
+              <ActiveLink
+                key={item.name}
+                href={item.href}
+                className="transition-colors hover:text-foreground"
+                activeClassName="text-foreground"
+                inactiveClassName="text-muted-foreground"
+              >
+                {item.name}
+              </ActiveLink>
+            ))}
           </nav>
         </SheetContent>
       </Sheet>

@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 
-export default function SettingsGeneralPage() {
+export default function SettingsLedgersPage() {
   return (
     <div className="grid gap-6">
       <Card>
