@@ -15,6 +15,8 @@
     "new-component": "hygen component new"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.18",
+    "@heroicons/react": "^2.1.1",
     "@radix-ui/react-dialog": "^1.0.5",
     "@radix-ui/react-dropdown-menu": "^2.0.6",
     "@radix-ui/react-label": "^2.0.2",
@@ -30,6 +32,7 @@
     "clsx": "^2.1.0",
     "cmdk": "^1.0.0",
     "lucide-react": "^0.359.0",
+    "luxon": "^3.4.4",
     "next": "14.1.4",
     "next-sitemap": "^4.2.3",
     "next-themes": "^0.3.0",
