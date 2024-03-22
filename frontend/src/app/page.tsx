@@ -4,14 +4,59 @@
 'use client';
 
 import { Counter } from '@/components/Counter';
-import { useGetCurrenciesQuery } from '@/lib/services/currency';
+import {
+  useGetCategoriesQuery,
+  useGetCurrenciesQuery,
+  useGetCurrencyConversionsQuery,
+  useGetLedgersQuery,
+  useGetRecurringBillsQuery,
+  useGetTransactionsQuery,
+  useGetUserQuery,
+  useGetUserSettingQuery,
+} from '@/lib/services/coinzApi';
 
 export default function Home() {
-  // Using a query hook automatically fetches data and returns query values
-  // const { data, error, isLoading } = useGetPokemonByNameQuery('bulbasaur');
-  const { data, error, isLoading } = useGetCurrenciesQuery({});
-  // Individual hooks are also accessible under the generated endpoints:
-  // const { data, error, isLoading } = pokemonApi.endpoints.getPokemonByName.useQuery('bulbasaur')
+  const userId = '1';
+  const {
+    data: currencies,
+    isLoading: currenciesLoading,
+    isError: currenciesError,
+  } = useGetCurrenciesQuery({});
+  const {
+    data: currencyConversions,
+    isLoading: currencyConversionsLoading,
+    isError: currencyConversionsError,
+  } = useGetCurrencyConversionsQuery({});
+  const {
+    data: categories,
+    isLoading: categoriesLoading,
+    isError: categoriesError,
+  } = useGetCategoriesQuery({});
+  const {
+    data: userSetting,
+    isLoading: userSettingLoading,
+    isError: userSettingError,
+  } = useGetUserSettingQuery({ userId });
+  const {
+    data: user,
+    isLoading: userLoading,
+    isError: userError,
+  } = useGetUserQuery({ userId });
+  const {
+    data: ledgers,
+    isLoading: ledgersLoading,
+    isError: ledgersError,
+  } = useGetLedgersQuery({});
+  const {
+    data: transactions,
+    isLoading: transactionsLoading,
+    isError: transactionsError,
+  } = useGetTransactionsQuery({});
+  const {
+    data: recurringBills,
+    isLoading: recurringBillsLoading,
+    isError: recurringBillsError,
+  } = useGetRecurringBillsQuery({});
 
   return (
     <div className="p-12">
@@ -22,18 +67,29 @@ export default function Home() {
             Easily convert time between different timezones and compare
             overlapping time periods.
           </h2>
-
           <Counter />
-
-          {error ? (
-            <>Oh no, there was an error</>
-          ) : isLoading ? (
-            <>Loading...</>
-          ) : data ? (
-            <>
-              <h3>{JSON.stringify(data)}</h3>
-            </>
-          ) : null}
+          Currencies: {JSON.stringify(currencies)}
+          <br />
+          <br />
+          Currency Conversions: {JSON.stringify(currencyConversions)}
+          <br />
+          <br />
+          Categories: {JSON.stringify(categories)}
+          <br />
+          <br />
+          User Setting: {JSON.stringify(userSetting)}
+          <br />
+          <br />
+          User: {JSON.stringify(user)}
+          <br />
+          <br />
+          Ledgers: {JSON.stringify(ledgers)}
+          <br />
+          <br />
+          Transactions: {JSON.stringify(transactions)}
+          <br />
+          <br />
+          Recurring Bills: {JSON.stringify(recurringBills)}
         </div>
       </div>
     </div>
