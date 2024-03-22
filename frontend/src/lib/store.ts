@@ -1,6 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 
-import { coinzApi } from '@/lib/services/coinzApi';
+import { coinzApi } from '@/lib/services/coinzApi/baseApi';
 import { counterReducer } from '@/lib/store/counterSlice';
 
 export const makeStore = () => {

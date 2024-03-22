@@ -1,19 +1,15 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 'use client';
 
 import { Counter } from '@/components/Counter';
-import {
-  useGetCategoriesQuery,
-  useGetCurrenciesQuery,
-  useGetCurrencyConversionsQuery,
-  useGetLedgersQuery,
-  useGetRecurringBillsQuery,
-  useGetTransactionsQuery,
-  useGetUserQuery,
-  useGetUserSettingQuery,
-} from '@/lib/services/coinzApi';
+import { useGetCategoriesQuery } from '@/lib/services/coinzApi/categories';
+import { useGetCurrenciesQuery } from '@/lib/services/coinzApi/currencies';
+import { useGetCurrencyConversionsQuery } from '@/lib/services/coinzApi/currencyConversions';
+import { useGetLedgersQuery } from '@/lib/services/coinzApi/ledgers';
+import { useGetRecurringBillsQuery } from '@/lib/services/coinzApi/recurringBills';
+import { useGetTransactionsQuery } from '@/lib/services/coinzApi/transactions';
+import { useGetUserQuery } from '@/lib/services/coinzApi/users';
+import { useGetUserSettingQuery } from '@/lib/services/coinzApi/userSettings';
 
 export default function Home() {
   const userId = '1';
@@ -21,17 +17,17 @@ export default function Home() {
     data: currencies,
     isLoading: currenciesLoading,
     isError: currenciesError,
-  } = useGetCurrenciesQuery({});
+  } = useGetCurrenciesQuery();
   const {
     data: currencyConversions,
     isLoading: currencyConversionsLoading,
     isError: currencyConversionsError,
-  } = useGetCurrencyConversionsQuery({});
+  } = useGetCurrencyConversionsQuery();
   const {
     data: categories,
     isLoading: categoriesLoading,
     isError: categoriesError,
-  } = useGetCategoriesQuery({});
+  } = useGetCategoriesQuery();
   const {
     data: userSetting,
     isLoading: userSettingLoading,
@@ -46,17 +42,17 @@ export default function Home() {
     data: ledgers,
     isLoading: ledgersLoading,
     isError: ledgersError,
-  } = useGetLedgersQuery({});
+  } = useGetLedgersQuery();
   const {
     data: transactions,
     isLoading: transactionsLoading,
     isError: transactionsError,
-  } = useGetTransactionsQuery({});
+  } = useGetTransactionsQuery();
   const {
     data: recurringBills,
     isLoading: recurringBillsLoading,
     isError: recurringBillsError,
-  } = useGetRecurringBillsQuery({});
+  } = useGetRecurringBillsQuery();
 
   return (
     <div className="p-12">
