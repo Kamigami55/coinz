@@ -2,8 +2,8 @@ import { coinzApi } from '@/lib/services/coinzApi/baseApi';
 
 interface CurrencyConversionResponse {
   id: number;
-  from_currency_id: number;
-  to_currency_id: number;
+  from_currency: number;
+  to_currency: number;
   rate: number;
   updated_at: string;
 }
@@ -27,8 +27,8 @@ const coinzApiWithCurrencyConversions = coinzApi.injectEndpoints({
           (currencyConversion: CurrencyConversionResponse) =>
             ({
               id: currencyConversion.id,
-              fromCurrencyId: currencyConversion.from_currency_id,
-              toCurrencyId: currencyConversion.to_currency_id,
+              fromCurrencyId: currencyConversion.from_currency,
+              toCurrencyId: currencyConversion.to_currency,
               rate: currencyConversion.rate,
               updatedAt: currencyConversion.updated_at,
             }) as CurrencyConversion
