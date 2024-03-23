@@ -5,6 +5,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 
 import { Navbar } from '@/components/Navbar';
+import { NextAuthProvider } from '@/components/NextAuthProvider';
 import { StoreProvider } from '@/components/StoreProvider';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -58,11 +59,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <StoreProvider>
-          <div className="flex min-h-screen flex-col">
-            <Navbar />
-            <main className="grow bg-muted/40">{children}</main>
-            {/* <Footer /> */}
-          </div>
+          <NextAuthProvider>
+            <div className="flex min-h-screen flex-col">
+              <Navbar />
+              <main className="grow bg-muted/40">{children}</main>
+              {/* <Footer /> */}
+            </div>
+          </NextAuthProvider>
         </StoreProvider>
 
         <Analytics />

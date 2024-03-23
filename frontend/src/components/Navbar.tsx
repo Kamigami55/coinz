@@ -2,6 +2,7 @@
 
 import { CircleUser, Menu, Package2, Search } from 'lucide-react';
 import Link from 'next/link';
+import { signIn, signOut, useSession } from 'next-auth/react';
 
 import { ActiveLink } from '@/components/ActiveLink';
 import { Button } from '@/components/ui/button';
@@ -36,6 +37,10 @@ const NavbarItems = [
 ];
 
 export function Navbar() {
+  const { data: session, status } = useSession();
+  console.log(session);
+  console.log(status);
+
   return (
     <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 z-50">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -102,22 +107,41 @@ export function Navbar() {
             />
           </div>
         </form>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="secondary" size="icon" className="rounded-full">
-              <CircleUser className="h-5 w-5" />
-              <span className="sr-only">Toggle user menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Support</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+
+        {status === 'authenticated' ? (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="secondary" size="icon" className="rounded-full">
+                <CircleUser className="h-5 w-5" />
+                <span className="sr-only">Toggle user menu</span>
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuLabel>{session?.user?.username}</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              <Link href="/settings/profile">
+                <DropdownMenuItem className="cursor-pointer">
+                  Profile
+                </DropdownMenuItem>
+              </Link>
+              <Link href="/settings/account">
+                <DropdownMenuItem className="cursor-pointer">
+                  Account
+                </DropdownMenuItem>
+              </Link>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                className="cursor-pointer"
+                onClick={() => signOut()}
+              >
+                Sign Out
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        ) : (
+          <Button onClick={() => signIn()}>Sign In</Button>
+        )}
       </div>
     </header>
   );
