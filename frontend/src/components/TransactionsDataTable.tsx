@@ -18,9 +18,11 @@ import { formatDate } from '@/lib/time';
 
 export function TransactionsDataTable({
   transactionsToDisplay = [],
+  onUpdateTransaction = () => {},
   onDeleteTransaction = () => {},
 }: {
   transactionsToDisplay?: TransactionToDisplay[];
+  onUpdateTransaction: (transactionId: number) => void;
   onDeleteTransaction: (transactionId: number) => void;
 }) {
   const columns: ColumnDef<TransactionToDisplay>[] = React.useMemo(
@@ -89,6 +91,11 @@ export function TransactionsDataTable({
               <DropdownMenuContent align="end">
                 <DropdownMenuLabel>Actions</DropdownMenuLabel>
                 <DropdownMenuItem
+                  onClick={() => onUpdateTransaction(row.original.id)}
+                >
+                  Edit
+                </DropdownMenuItem>
+                <DropdownMenuItem
                   onClick={() => onDeleteTransaction(row.original.id)}
                 >
                   Delete transaction
@@ -99,7 +106,7 @@ export function TransactionsDataTable({
         },
       },
     ],
-    [onDeleteTransaction]
+    [onDeleteTransaction, onUpdateTransaction]
   );
 
   return <DataTable columns={columns} data={transactionsToDisplay} />;

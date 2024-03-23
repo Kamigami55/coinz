@@ -36,6 +36,27 @@ interface AddTransactionRequestParams {
   recurringBillId?: number;
 }
 
+interface UpdateTransactionRequestParams {
+  id: number;
+  ledgerId?: number;
+  amount?: number;
+  currencyId?: number;
+  name?: string;
+  description?: string;
+  categoryId?: number;
+  recurringBillId?: number;
+}
+
+interface UpdateTransactionRequest {
+  ledger?: number;
+  amount?: number;
+  currency?: number;
+  name?: string;
+  description?: string;
+  category?: number;
+  recurring_bill?: number;
+}
+
 interface AddTransactionRequest {
   ledger: number;
   amount: number;
@@ -103,6 +124,38 @@ const coinzApiWithTransactions = coinzApi.injectEndpoints({
         }) as Transaction,
     }),
     // =========================================================================
+    updateTransaction: builder.mutation<
+      Transaction,
+      UpdateTransactionRequestParams
+    >({
+      query: (params: UpdateTransactionRequestParams) => ({
+        url: `/transactions/${params.id}/`,
+        method: 'PUT',
+        body: {
+          ledger: params.ledgerId,
+          amount: params.amount,
+          currency: params.currencyId,
+          name: params.name,
+          description: params.description,
+          category: params.categoryId,
+          recurring_bill: params.recurringBillId,
+        } as UpdateTransactionRequest,
+      }),
+      transformResponse: (response: TransactionResponse) =>
+        ({
+          id: response.id,
+          ledgerId: response.ledger,
+          amount: response.amount,
+          currencyId: response.currency,
+          name: response.name,
+          description: response.description,
+          categoryId: response.category,
+          createdAt: response.created_at,
+          updatedAt: response.updated_at,
+          recurringBillId: response.recurring_bill,
+        }) as Transaction,
+    }),
+    // =========================================================================
     deleteTransaction: builder.mutation<void, DeleteTransactionRequestParams>({
       query: (params: DeleteTransactionRequestParams) => ({
         url: `/transactions/${params.id}/`,
@@ -115,5 +168,6 @@ const coinzApiWithTransactions = coinzApi.injectEndpoints({
 export const {
   useGetTransactionsQuery,
   useAddTransactionMutation,
+  useUpdateTransactionMutation,
   useDeleteTransactionMutation,
 } = coinzApiWithTransactions;

@@ -1,4 +1,5 @@
 'use client';
+
 import * as React from 'react';
 import { z } from 'zod';
 
@@ -15,6 +16,11 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { UpdateTransactionDialog } from '@/components/UpdateTransactionDialog';
+import {
+  UpdateTransactionForm,
+  updateTransactionFormSchema,
+} from '@/components/UpdateTransactionForm';
 import { getTransactionsToDisplay } from '@/lib/helper';
 import { useGetCategoriesQuery } from '@/lib/services/coinzApi/categories';
 import { useGetCurrenciesQuery } from '@/lib/services/coinzApi/currencies';
@@ -25,6 +31,7 @@ import {
   useAddTransactionMutation,
   useDeleteTransactionMutation,
   useGetTransactionsQuery,
+  useUpdateTransactionMutation,
 } from '@/lib/services/coinzApi/transactions';
 import { useGetUserQuery } from '@/lib/services/coinzApi/users';
 import { useGetUserSettingQuery } from '@/lib/services/coinzApi/userSettings';
@@ -42,22 +49,6 @@ export default function TransactionsPage() {
   const { data: transactions, refetch: refetchTransactions } =
     useGetTransactionsQuery();
   const { data: recurringBills } = useGetRecurringBillsQuery();
-
-  const [addTransactionMutation, { isLoading: addTransactionLoading }] =
-    useAddTransactionMutation();
-
-  const handleAddTransaction = async (
-    values: z.infer<typeof addTransactionFormSchema>
-  ) => {
-    await addTransactionMutation({
-      ledgerId: values.ledgerId,
-      amount: values.amount,
-      currencyId: values.currencyId,
-      name: values.name,
-      description: values.description,
-      categoryId: values.categoryId,
-    });
-  };
 
   const transactionsToDisplay = React.useMemo(() => {
     return getTransactionsToDisplay({
@@ -77,6 +68,59 @@ export default function TransactionsPage() {
     ledgers,
   ]);
 
+  // Add related logic
+  const [addTransactionMutation, { isLoading: addTransactionLoading }] =
+    useAddTransactionMutation();
+  const handleAddTransaction = async (
+    values: z.infer<typeof addTransactionFormSchema>
+  ) => {
+    await addTransactionMutation({
+      ledgerId: values.ledgerId,
+      amount: values.amount,
+      currencyId: values.currencyId,
+      name: values.name,
+      description: values.description,
+      categoryId: values.categoryId,
+    });
+  };
+  // ./Add related logic
+
+  // Update related logic
+  const [transactionIdToConfirmUpdate, setTransactionIdToConfirmUpdate] =
+    React.useState<number>();
+  const transactionToUpdate = React.useMemo(
+    () =>
+      transactions?.find(
+        (transaction) => transaction.id === transactionIdToConfirmUpdate
+      ),
+    [transactionIdToConfirmUpdate, transactions]
+  );
+  const handleOpenUpdateTransactionDialog = (transactionId: number) => {
+    setTransactionIdToConfirmUpdate(transactionId);
+  };
+  const handleCloseUpdateTransactionDialog = () => {
+    setTransactionIdToConfirmUpdate(undefined);
+  };
+  const [updateTransactionMutation, { isLoading: updateTransactionLoading }] =
+    useUpdateTransactionMutation();
+  const handleUpdateTransaction = async (
+    values: z.infer<typeof updateTransactionFormSchema>
+  ) => {
+    await updateTransactionMutation({
+      id: transactionIdToConfirmUpdate,
+      ledgerId: values.ledgerId,
+      amount: values.amount,
+      currencyId: values.currencyId,
+      name: values.name,
+      description: values.description,
+      categoryId: values.categoryId,
+    });
+    setTransactionIdToConfirmUpdate(undefined);
+    refetchTransactions();
+  };
+  // ./Update related logic
+
+  // Delete related logic
   const [deleteTransaction, { isLoading: deleteTransactionLoading }] =
     useDeleteTransactionMutation();
   const [transactionIdToConfirmDelete, setTransactionIdToConfirmDelete] =
@@ -94,6 +138,7 @@ export default function TransactionsPage() {
   const handleCloseDeleteTransactionAlert = () => {
     setTransactionIdToConfirmDelete(undefined);
   };
+  // ./Delete related logic
 
   return (
     <>
@@ -106,6 +151,7 @@ export default function TransactionsPage() {
             <CardContent>
               <TransactionsDataTable
                 transactionsToDisplay={transactionsToDisplay}
+                onUpdateTransaction={handleOpenUpdateTransactionDialog}
                 onDeleteTransaction={handleOpenDeleteTransactionAlert}
               />
             </CardContent>
@@ -130,6 +176,20 @@ export default function TransactionsPage() {
           </Card>
         </div>
       </div>
+
+      <UpdateTransactionDialog
+        open={transactionIdToConfirmUpdate !== undefined}
+        handleClose={handleCloseUpdateTransactionDialog}
+      >
+        <UpdateTransactionForm
+          transaction={transactionToUpdate}
+          currencies={currencies}
+          categories={categories}
+          ledgers={ledgers}
+          onSubmit={handleUpdateTransaction}
+          isSubmitting={updateTransactionLoading}
+        />
+      </UpdateTransactionDialog>
 
       <DeleteTransactionAlertDialog
         open={transactionIdToConfirmDelete !== undefined}
