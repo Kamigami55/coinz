@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,9 +39,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    "django.contrib.sites",  # For allauth
 
     # Django REST Framework
     'rest_framework',
+    "rest_framework.authtoken",
+    "rest_framework_simplejwt", # From 'djangorestframework-simplejwt'
+
+    # Authentication
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount", # social authentication
+    "dj_rest_auth",
+    "dj_rest_auth.registration",
 
     # Basics
     'corsheaders',
@@ -48,6 +59,7 @@ INSTALLED_APPS = [
 
     # Custom
     'coinz_api',
+    "authentication.apps.AuthenticationConfig",
 ]
 
 MIDDLEWARE = [
@@ -59,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'coinz_backend.urls'
@@ -148,17 +161,48 @@ REST_FRAMEWORK = {
 
     # For drf-spectacular (auto-generated swagger docs)
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+
+    # For JWT Authentication
+    "DEFAULT_AUTHENTICATION_CLASSES": [
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
+    ]
 }
 
 AUTH_USER_MODEL = 'coinz_api.User'
 
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-]
+if DEBUG:
+    CORS_ALLOW_ALL_ORIGINS = True
+else:
+    CORS_ALLOWED_ORIGINS = [
+        "http://localhost:3000/",
+        "http://127.0.0.1:3000/",
+    ]
 
+# APi Docs
 SPECTACULAR_SETTINGS = {
     'TITLE': 'Coinz API',
     'DESCRIPTION': 'API for Coinz',
     'VERSION': '1.0.0',
     # OTHER SETTINGS
+}
+
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=60),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=7),
+    "ROTATE_REFRESH_TOKENS": False,
+    "BLACKLIST_AFTER_ROTATION": False,
+    "UPDATE_LAST_LOGIN": True,
+    "SIGNING_KEY": "complexsigningkey",  # generate a key and replace me
+    "ALGORITHM": "HS512",
+}
+
+# For allauth
+SITE_ID = 1
+
+ACCOUNT_EMAIL_REQUIRED = False
+ACCOUNT_EMAIL_VERIFICATION = "none"
+
+REST_AUTH = {
+    "USE_JWT": True,
+    "JWT_AUTH_HTTPONLY": False,
 }
