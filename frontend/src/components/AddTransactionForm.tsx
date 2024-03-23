@@ -55,12 +55,12 @@ export function AddTransactionForm({
   const form = useForm<z.infer<typeof addTransactionFormSchema>>({
     resolver: zodResolver(addTransactionFormSchema),
     defaultValues: {
-      ledgerId: 1,
-      amount: 0,
-      currencyId: 1,
+      ledgerId: ledgers?.length ? ledgers[0].id : null,
+      amount: null,
+      currencyId: currencies?.length ? currencies[0].id : null,
       name: '',
       description: '',
-      categoryId: 1,
+      categoryId: categories?.length ? categories[0].id : null,
     },
   });
 
@@ -114,7 +114,7 @@ export function AddTransactionForm({
               <FormLabel>Currency</FormLabel>
               <Select
                 onValueChange={(value) => field.onChange(Number(value))}
-                defaultValue={field.value.toString()}
+                defaultValue={field.value?.toString()}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -146,7 +146,7 @@ export function AddTransactionForm({
               <FormLabel>Category</FormLabel>
               <Select
                 onValueChange={(value) => field.onChange(Number(value))}
-                defaultValue={field.value.toString()}
+                defaultValue={field.value?.toString()}
               >
                 <FormControl>
                   <SelectTrigger>
@@ -178,7 +178,7 @@ export function AddTransactionForm({
               <FormLabel>Ledger</FormLabel>
               <Select
                 onValueChange={(value) => field.onChange(Number(value))}
-                defaultValue={field.value.toString()}
+                defaultValue={field.value?.toString()}
               >
                 <FormControl>
                   <SelectTrigger>
