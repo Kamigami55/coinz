@@ -6,7 +6,7 @@ import {
   AddTransactionForm,
   addTransactionFormSchema,
 } from '@/components/AddTransactionForm';
-import { TransactionsTable } from '@/components/TransactionsTable';
+import { TransactionsDataTable } from '@/components/TransactionsDataTable';
 import { getTransactionsToDisplay } from '@/lib/helper';
 import { useGetCategoriesQuery } from '@/lib/services/coinzApi/categories';
 import { useGetCurrenciesQuery } from '@/lib/services/coinzApi/currencies';
@@ -80,7 +80,7 @@ export default function TransactionsPage() {
           />
         </div>
 
-        <TransactionsTable transactionsToDisplay={transactionsToDisplay} />
+        <TransactionsDataTable transactionsToDisplay={transactionsToDisplay} />
       </div>
     </>
   );
