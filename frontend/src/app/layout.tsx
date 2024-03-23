@@ -60,7 +60,7 @@ export default function RootLayout({
         <StoreProvider>
           <div className="flex min-h-screen flex-col">
             <Navbar />
-            <main className="grow">{children}</main>
+            <main className="grow bg-muted/40">{children}</main>
             {/* <Footer /> */}
           </div>
         </StoreProvider>
