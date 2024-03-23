@@ -5,6 +5,7 @@ interface LedgerResponse {
   name: string;
   created_at: string;
   users: number[];
+  transaction_count: number;
 }
 
 export interface Ledger {
@@ -12,6 +13,7 @@ export interface Ledger {
   name: string;
   createdAt: string;
   userIds: number[];
+  transactionCount: number;
 }
 
 interface AddLedgerRequestParams {
@@ -20,6 +22,10 @@ interface AddLedgerRequestParams {
 
 interface AddLedgerRequest {
   name: string;
+}
+
+interface DeleteLedgerRequestParams {
+  id: number;
 }
 
 const coinzApiWithLedgers = coinzApi.injectEndpoints({
@@ -34,6 +40,7 @@ const coinzApiWithLedgers = coinzApi.injectEndpoints({
               name: ledger.name,
               createdAt: ledger.created_at,
               userIds: ledger.users,
+              transactionCount: ledger.transaction_count,
             }) as Ledger
         );
         return formattedResponse;
@@ -56,7 +63,18 @@ const coinzApiWithLedgers = coinzApi.injectEndpoints({
           userIds: [],
         }) as Ledger,
     }),
+    // =========================================================================
+    deleteLedger: builder.mutation<void, DeleteLedgerRequestParams>({
+      query: (params: DeleteLedgerRequestParams) => ({
+        url: `/ledgers/${params.id}/`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useGetLedgersQuery, useAddLedgerMutation } = coinzApiWithLedgers;
+export const {
+  useGetLedgersQuery,
+  useAddLedgerMutation,
+  useDeleteLedgerMutation,
+} = coinzApiWithLedgers;

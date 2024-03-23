@@ -6,11 +6,6 @@ class UserSerializer(serializers.ModelSerializer):
         model = User
         fields = "__all__"
 
-class LedgerSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Ledger
-        fields = "__all__"
-
 class CurrencySerializer(serializers.ModelSerializer):
     class Meta:
         model = Currency
@@ -30,6 +25,14 @@ class TransactionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Transaction
         fields = "__all__"
+
+class LedgerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Ledger
+        fields = "__all__"
+    transaction_count = serializers.SerializerMethodField()
+    def get_transaction_count(self, obj):
+        return obj.transactions.count()
 
 class UserSettingsSerializer(serializers.ModelSerializer):
     class Meta:

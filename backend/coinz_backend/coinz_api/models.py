@@ -43,7 +43,7 @@ class Category(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class RecurringBill(models.Model):
-    ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE)
+    ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE, related_name='recurring_bills')
     amount = models.FloatField()
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=True, blank=True)
@@ -56,7 +56,7 @@ class RecurringBill(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
 class Transaction(models.Model):
-    ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE)
+    ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE, related_name='transactions')
     amount = models.FloatField()
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=True, blank=True)
@@ -64,7 +64,7 @@ class Transaction(models.Model):
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    recurring_bill = models.ForeignKey(RecurringBill, on_delete=models.SET_NULL, null=True, blank=True)
+    recurring_bill = models.ForeignKey(RecurringBill, on_delete=models.SET_NULL, null=True, blank=True, related_name='transactions')
 
 class UserSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='settings')
