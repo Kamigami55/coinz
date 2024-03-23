@@ -1,5 +1,6 @@
 from coinz_api.models import User, Ledger, Currency, Category, RecurringBill, Transaction, UserSettings, CurrencyConversion
 from rest_framework import permissions, viewsets
+from rest_framework_simplejwt.authentication import JWTAuthentication
 
 from coinz_api.serializers import UserSerializer, LedgerSerializer, CurrencySerializer, CategorySerializer, RecurringBillSerializer, TransactionSerializer, UserSettingsSerializer, CurrencyConversionSerializer
 
@@ -12,7 +13,13 @@ class UserViewSet(viewsets.ModelViewSet):
 class LedgerViewSet(viewsets.ModelViewSet):
     queryset = Ledger.objects.all().order_by('name')
     serializer_class = LedgerSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            return Ledger.objects.filter(users__id=user.id)
+        return Ledger.objects.none()
 
 class CurrencyViewSet(viewsets.ModelViewSet):
     queryset = Currency.objects.all().order_by('name')
