@@ -1,6 +1,6 @@
 'use client';
 
-import { Loader2, Trash2Icon } from 'lucide-react';
+import { Loader2, PencilIcon, Trash2Icon } from 'lucide-react';
 import * as React from 'react';
 
 import { AddLedgerDialog } from '@/components/AddLedgerDialog';
@@ -30,7 +30,9 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
+import { UpdateLedgerFormDialog } from '@/components/UpdateLedgerFormDialog';
 import {
+  Ledger,
   useDeleteLedgerMutation,
   useGetLedgersQuery,
 } from '@/lib/services/coinzApi/ledgers';
@@ -64,6 +66,11 @@ export default function SettingsLedgersPage() {
     handleCloseDeleteLedgerAlert();
   };
   // ./Delete related logic
+
+  const [ledgerToUpdate, setLedgerToUpdate] = React.useState<Ledger>();
+  const handleCloseUpdateLedgerDialog = () => {
+    setLedgerToUpdate(undefined);
+  };
 
   return (
     <>
@@ -104,7 +111,15 @@ export default function SettingsLedgersPage() {
                     <TableCell className="font-medium">{ledger.name}</TableCell>
                     <TableCell>{formatDate(ledger.createdAt)}</TableCell>
                     <TableCell>{ledger.transactionCount}</TableCell>
-                    <TableCell className="text-right">
+                    <TableCell className="flex gap-2 justify-end">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() => setLedgerToUpdate(ledger)}
+                        className={cn(isEditing ? 'visible' : 'invisible')}
+                      >
+                        <PencilIcon className="h-4 w-4" />
+                      </Button>
                       <Button
                         variant="destructive"
                         size="icon"
@@ -156,6 +171,12 @@ export default function SettingsLedgersPage() {
           </AlertDialogFooter>
         </AlertDialogContent>
       </AlertDialog>
+
+      {/* Update ledger dialog */}
+      <UpdateLedgerFormDialog
+        ledger={ledgerToUpdate}
+        handleClose={handleCloseUpdateLedgerDialog}
+      />
     </>
   );
 }
