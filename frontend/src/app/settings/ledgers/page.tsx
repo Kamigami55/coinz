@@ -1,49 +1,60 @@
-import { Button } from '@/components/ui/button';
+'use client';
+
+import { AddLedgerDialog } from '@/components/AddLedgerDialog';
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { useGetLedgersQuery } from '@/lib/services/coinzApi/ledgers';
+import { formatDate } from '@/lib/time';
 
 export default function SettingsLedgersPage() {
+  const { data: ledgers } = useGetLedgersQuery();
+
   return (
     <div className="grid gap-6">
       <Card>
-        <CardHeader>
-          <CardTitle>Store Name</CardTitle>
-          <CardDescription>
-            Used to identify your store in the marketplace.
-          </CardDescription>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <div>
+            <CardTitle>Ledgers</CardTitle>
+            <CardDescription className="mt-2">
+              Your ledgers are the accounts that you use to track your expenses
+              and income.
+            </CardDescription>
+          </div>
+
+          <AddLedgerDialog />
         </CardHeader>
+
         <CardContent>
-          <form>
-            <Input placeholder="Store Name" />
-          </form>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Name</TableHead>
+                <TableHead>Created At</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {ledgers?.map((ledger) => (
+                <TableRow key={ledger.id}>
+                  <TableCell className="font-medium">{ledger.name}</TableCell>
+                  <TableCell>{formatDate(ledger.createdAt)}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <Button>Save</Button>
-        </CardFooter>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Plugins Directory</CardTitle>
-          <CardDescription>
-            The directory within your project, in which your plugins are
-            located.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form className="flex flex-col gap-4">
-            <Input placeholder="Project Name" defaultValue="/content/plugins" />
-          </form>
-        </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <Button>Save</Button>
-        </CardFooter>
       </Card>
     </div>
   );

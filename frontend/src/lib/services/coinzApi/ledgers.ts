@@ -14,6 +14,14 @@ export interface Ledger {
   userIds: number[];
 }
 
+interface AddLedgerRequestParams {
+  name: string;
+}
+
+interface AddLedgerRequest {
+  name: string;
+}
+
 const coinzApiWithLedgers = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
     getLedgers: builder.query<Ledger[], void>({
@@ -31,7 +39,24 @@ const coinzApiWithLedgers = coinzApi.injectEndpoints({
         return formattedResponse;
       },
     }),
+    // =========================================================================
+    addLedger: builder.mutation<Ledger, AddLedgerRequestParams>({
+      query: (params: AddLedgerRequestParams) => ({
+        url: `/ledgers/`,
+        method: 'POST',
+        body: {
+          name: params.name,
+        } as AddLedgerRequest,
+      }),
+      transformResponse: (response: LedgerResponse) =>
+        ({
+          id: response.id,
+          name: response.name,
+          createdAt: response.created_at,
+          userIds: [],
+        }) as Ledger,
+    }),
   }),
 });
 
-export const { useGetLedgersQuery } = coinzApiWithLedgers;
+export const { useGetLedgersQuery, useAddLedgerMutation } = coinzApiWithLedgers;
