@@ -98,9 +98,5 @@ export function TransactionsDataTable({
 }: {
   transactionsToDisplay?: TransactionToDisplay[];
 }) {
-  return (
-    <div className="container mx-auto py-10">
-      <DataTable columns={columns} data={transactionsToDisplay} />
-    </div>
-  );
+  return <DataTable columns={columns} data={transactionsToDisplay} />;
 }

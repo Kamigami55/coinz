@@ -7,6 +7,13 @@ import {
   addTransactionFormSchema,
 } from '@/components/AddTransactionForm';
 import { TransactionsDataTable } from '@/components/TransactionsDataTable';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { getTransactionsToDisplay } from '@/lib/helper';
 import { useGetCategoriesQuery } from '@/lib/services/coinzApi/categories';
 import { useGetCurrenciesQuery } from '@/lib/services/coinzApi/currencies';
@@ -68,20 +75,37 @@ export default function TransactionsPage() {
   ]);
 
   return (
-    <>
-      <div className="space-y-16 py-16 xl:space-y-20">
-        <div className="px-8">
-          <AddTransactionForm
-            currencies={currencies}
-            categories={categories}
-            ledgers={ledgers}
-            onAddTransaction={handleAddTransaction}
-            isSubmitting={addTransactionLoading}
-          />
-        </div>
+    <div className="p-4 md:p-8">
+      <div className="grid gap-4 md:gap-8">
+        <Card>
+          <CardHeader>
+            <CardTitle>Transactions</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <TransactionsDataTable
+              transactionsToDisplay={transactionsToDisplay}
+            />
+          </CardContent>
+        </Card>
 
-        <TransactionsDataTable transactionsToDisplay={transactionsToDisplay} />
+        <Card>
+          <CardHeader className="flex flex-row items-center">
+            <div className="grid gap-2">
+              <CardTitle>Add Transaction</CardTitle>
+              <CardDescription>Create a new transaction.</CardDescription>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <AddTransactionForm
+              currencies={currencies}
+              categories={categories}
+              ledgers={ledgers}
+              onAddTransaction={handleAddTransaction}
+              isSubmitting={addTransactionLoading}
+            />
+          </CardContent>
+        </Card>
       </div>
-    </>
+    </div>
   );
 }
