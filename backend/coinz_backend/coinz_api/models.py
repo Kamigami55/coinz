@@ -15,6 +15,8 @@ class LedgerUser(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self) -> str:
+        return f"{self.user.username} - {self.ledger.name}"
 
 class Currency(models.Model):
     name = models.CharField(max_length=255, unique=True)
