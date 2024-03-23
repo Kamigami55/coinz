@@ -46,6 +46,10 @@ interface AddTransactionRequest {
   recurring_bill?: number;
 }
 
+interface DeleteTransactionRequestParams {
+  id: number;
+}
+
 const coinzApiWithTransactions = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
     getTransactions: builder.query<Transaction[], void>({
@@ -98,8 +102,18 @@ const coinzApiWithTransactions = coinzApi.injectEndpoints({
           recurringBillId: response.recurring_bill,
         }) as Transaction,
     }),
+    // =========================================================================
+    deleteTransaction: builder.mutation<void, DeleteTransactionRequestParams>({
+      query: (params: DeleteTransactionRequestParams) => ({
+        url: `/transactions/${params.id}/`,
+        method: 'DELETE',
+      }),
+    }),
   }),
 });
 
-export const { useGetTransactionsQuery, useAddTransactionMutation } =
-  coinzApiWithTransactions;
+export const {
+  useGetTransactionsQuery,
+  useAddTransactionMutation,
+  useDeleteTransactionMutation,
+} = coinzApiWithTransactions;
