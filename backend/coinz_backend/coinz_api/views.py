@@ -39,7 +39,14 @@ class RecurringBillViewSet(viewsets.ModelViewSet):
 class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all().order_by('name')
     serializer_class = TransactionSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    def get_queryset(self):
+        user = self.request.user
+        if user.is_authenticated:
+            # Find all transactions that belong to the ledger owned by the user
+            return Transaction.objects.filter(ledger__users__id=user.id)
+        return Transaction.objects.none()
 
 class UserSettingsViewSet(viewsets.ModelViewSet):
     # order by user join date
