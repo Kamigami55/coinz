@@ -1,11 +1,13 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Loader2 } from 'lucide-react';
+import { CalendarIcon, Loader2 } from 'lucide-react';
+import { DateTime } from 'luxon';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import {
   Form,
   FormControl,
@@ -15,6 +17,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import {
   Select,
   SelectContent,
@@ -27,6 +34,7 @@ import { Category } from '@/lib/services/coinzApi/categories';
 import { Currency } from '@/lib/services/coinzApi/currencies';
 import { Ledger } from '@/lib/services/coinzApi/ledgers';
 import { Transaction } from '@/lib/services/coinzApi/transactions';
+import { cn } from '@/lib/utils';
 
 export const updateTransactionFormSchema = z.object({
   ledgerId: z.number(),
@@ -37,6 +45,7 @@ export const updateTransactionFormSchema = z.object({
   name: z.string(),
   description: z.string(),
   categoryId: z.number(),
+  date: z.date(),
 });
 
 export function UpdateTransactionForm({
@@ -66,6 +75,7 @@ export function UpdateTransactionForm({
       name: transaction?.name ?? '',
       description: transaction?.description ?? '',
       categoryId: transaction?.categoryId ?? null,
+      date: new Date(transaction?.date) ?? new Date(),
     },
   });
 
@@ -83,6 +93,47 @@ export function UpdateTransactionForm({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="date"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Date</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={'outline'}
+                      className={cn(
+                        'pl-3 text-left font-normal',
+                        !field.value && 'text-muted-foreground'
+                      )}
+                    >
+                      {field.value ? (
+                        DateTime.fromJSDate(field.value).toLocaleString(
+                          DateTime.DATE_SHORT
+                        )
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="name"

@@ -16,12 +16,16 @@ class LedgerAdmin(admin.ModelAdmin):
         return ', '.join([user.username for user in obj.users.all()])
     inlines = [LedgerUserInline]
 
+class TransactionAdmin(admin.ModelAdmin):
+    list_display = ['name', 'amount', 'currency', 'ledger', 'category', 'date']
+    list_filter = ['ledger', 'category', 'date', 'currency']
+
 admin.site.register(User, UsersAdmin)
 admin.site.register(Ledger, LedgerAdmin)
 admin.site.register(Currency)
 admin.site.register(CurrencyConversion)
 admin.site.register(Category)
 admin.site.register(RecurringBill)
-admin.site.register(Transaction)
+admin.site.register(Transaction, TransactionAdmin)
 admin.site.register(UserSettings)
 admin.site.register(LedgerUser)

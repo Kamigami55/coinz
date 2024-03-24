@@ -58,14 +58,27 @@ class RecurringBill(models.Model):
     currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    interval_days = models.IntegerField()
-    start_date = models.DateTimeField(auto_now_add=True)
+    start_date = models.DateTimeField()
     end_date = models.DateTimeField(null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    DAY = 'DAY'
+    WEEK = 'WEEK'
+    MONTH = 'MONTH'
+    YEAR = 'YEAR'
+    INTERVAL_UNITS = [
+        (DAY, 'Day'),
+        (WEEK, 'Week'),
+        (MONTH, 'Month'),
+        (YEAR, 'Year'),
+    ]
+    interval_unit = models.CharField(max_length=5, choices=INTERVAL_UNITS, default=DAY)
+    interval_amount = models.IntegerField()
+
     def __str__(self) -> str:
-        return f"{self.name} ({self.amount} {self.currency.abbreviation}) ({self.ledger.name} - {self.category.name}) every {self.interval_days} days from {self.start_date} to {self.end_date}"
+        return f"{self.name} ({self.amount} {self.currency.abbreviation}) ({self.ledger.name} - {self.category.name}) every {self.interval_amount} {self.interval_unit} from {self.start_date} to {self.end_date}"
 
 class Transaction(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE, related_name='transactions')
@@ -74,6 +87,7 @@ class Transaction(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     recurring_bill = models.ForeignKey(RecurringBill, on_delete=models.SET_NULL, null=True, blank=True, related_name='transactions')

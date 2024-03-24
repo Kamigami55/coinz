@@ -8,8 +8,7 @@ interface TransactionResponse {
   name: string;
   description: string;
   category: number;
-  created_at: string;
-  updated_at: string;
+  date: string;
   recurring_bill: number;
 }
 
@@ -21,8 +20,7 @@ export interface Transaction {
   name: string;
   description: string;
   categoryId: number;
-  createdAt: string;
-  updatedAt: string;
+  date: string;
   recurringBillId: number;
 }
 
@@ -33,6 +31,7 @@ interface AddTransactionRequestParams {
   name: string;
   description: string;
   categoryId: number;
+  date: string;
   recurringBillId?: number;
 }
 
@@ -44,6 +43,7 @@ interface UpdateTransactionRequestParams {
   name?: string;
   description?: string;
   categoryId?: number;
+  date?: string;
   recurringBillId?: number;
 }
 
@@ -54,6 +54,7 @@ interface UpdateTransactionRequest {
   name?: string;
   description?: string;
   category?: number;
+  date?: string;
   recurring_bill?: number;
 }
 
@@ -64,6 +65,7 @@ interface AddTransactionRequest {
   name: string;
   description: string;
   category: number;
+  date: string;
   recurring_bill?: number;
 }
 
@@ -86,8 +88,7 @@ const coinzApiWithTransactions = coinzApi.injectEndpoints({
               name: transaction.name,
               description: transaction.description,
               categoryId: transaction.category,
-              createdAt: transaction.created_at,
-              updatedAt: transaction.updated_at,
+              date: transaction.date,
               recurringBillId: transaction.recurring_bill,
             }) as Transaction
         );
@@ -106,6 +107,7 @@ const coinzApiWithTransactions = coinzApi.injectEndpoints({
           name: params.name,
           description: params.description,
           category: params.categoryId,
+          date: params.date,
           recurring_bill: params.recurringBillId,
         } as AddTransactionRequest,
       }),
@@ -118,8 +120,7 @@ const coinzApiWithTransactions = coinzApi.injectEndpoints({
           name: response.name,
           description: response.description,
           categoryId: response.category,
-          createdAt: response.created_at,
-          updatedAt: response.updated_at,
+          date: response.date,
           recurringBillId: response.recurring_bill,
         }) as Transaction,
     }),
@@ -138,6 +139,7 @@ const coinzApiWithTransactions = coinzApi.injectEndpoints({
           name: params.name,
           description: params.description,
           category: params.categoryId,
+          date: params.date,
           recurring_bill: params.recurringBillId,
         } as UpdateTransactionRequest,
       }),
@@ -150,8 +152,7 @@ const coinzApiWithTransactions = coinzApi.injectEndpoints({
           name: response.name,
           description: response.description,
           categoryId: response.category,
-          createdAt: response.created_at,
-          updatedAt: response.updated_at,
+          date: response.date,
           recurringBillId: response.recurring_bill,
         }) as Transaction,
     }),

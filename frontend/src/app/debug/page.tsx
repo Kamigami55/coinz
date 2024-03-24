@@ -79,6 +79,7 @@ export default function DebugPage() {
       name: name,
       description: description,
       categoryId: category,
+      date: new Date().toISOString(),
     });
   };
 

@@ -128,6 +128,7 @@ export default function HomePage() {
       name: values.name,
       description: values.description,
       categoryId: values.categoryId,
+      date: new Date().toISOString(),
     });
     // await addTransactionMutation.reset();
     // await addTransactionMutation.setError(null);

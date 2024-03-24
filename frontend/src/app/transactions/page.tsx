@@ -81,6 +81,7 @@ export default function TransactionsPage() {
       name: values.name,
       description: values.description,
       categoryId: values.categoryId,
+      date: values.date.toISOString(),
     });
   };
   // ./Add related logic
@@ -114,6 +115,7 @@ export default function TransactionsPage() {
       name: values.name,
       description: values.description,
       categoryId: values.categoryId,
+      date: values.date.toISOString(),
     });
     setTransactionIdToConfirmUpdate(undefined);
     refetchTransactions();

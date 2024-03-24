@@ -28,7 +28,7 @@ export function TransactionsDataTable({
   const columns: ColumnDef<TransactionToDisplay>[] = React.useMemo(
     () => [
       {
-        accessorKey: 'createdAt',
+        accessorKey: 'date',
         header: ({ column }) => {
           return (
             <Button
@@ -42,7 +42,7 @@ export function TransactionsDataTable({
             </Button>
           );
         },
-        cell: ({ row }) => formatDate(row.getValue('createdAt')),
+        cell: ({ row }) => formatDate(row.getValue('date')),
       },
       {
         id: 'category',

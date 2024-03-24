@@ -62,6 +62,7 @@ export default function HomePage() {
       name: values.name,
       description: values.description,
       categoryId: values.categoryId,
+      date: values.date,
     });
   };
 
