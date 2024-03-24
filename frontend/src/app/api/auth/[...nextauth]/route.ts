@@ -1,5 +1,5 @@
 import axios from 'axios';
-import NextAuth from 'next-auth';
+import NextAuth, { SessionStrategy } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
 // These two values should be a bit less than actual token lifetimes
@@ -17,10 +17,10 @@ const SIGN_IN_HANDLERS = {
 };
 const SIGN_IN_PROVIDERS = Object.keys(SIGN_IN_HANDLERS);
 
-export const authOptions = {
+const authOptions = {
   secret: process.env.AUTH_SECRET,
   session: {
-    strategy: 'jwt',
+    strategy: 'jwt' as SessionStrategy,
     maxAge: BACKEND_REFRESH_TOKEN_LIFETIME,
   },
   providers: [

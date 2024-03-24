@@ -3,6 +3,7 @@ import './globals.css';
 import { Analytics } from '@vercel/analytics/react';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import { Suspense } from 'react';
 
 import { Navbar } from '@/components/Navbar';
 import { NextAuthProvider } from '@/components/NextAuthProvider';
@@ -63,7 +64,9 @@ export default function RootLayout({
           <NextAuthProvider>
             <div className="flex min-h-screen flex-col">
               <Navbar />
-              <main className="grow bg-muted/40">{children}</main>
+              <main className="grow bg-muted/40">
+                <Suspense>{children}</Suspense>
+              </main>
               {/* <Footer /> */}
             </div>
           </NextAuthProvider>
