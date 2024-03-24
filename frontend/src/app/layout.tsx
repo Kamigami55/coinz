@@ -6,6 +6,7 @@ import { Inter } from 'next/font/google';
 
 import { Navbar } from '@/components/Navbar';
 import { NextAuthProvider } from '@/components/NextAuthProvider';
+import { SegmentAnalytics } from '@/components/SegmentAnalytics';
 import { StoreProvider } from '@/components/StoreProvider';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -68,6 +69,7 @@ export default function RootLayout({
           </NextAuthProvider>
         </StoreProvider>
 
+        <SegmentAnalytics />
         <Analytics />
       </body>
     </html>
