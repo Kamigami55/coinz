@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-lasr(=7ckhu=l#hcwk=b#al(1(l$827bj$t%0noa(*#ber0#hj
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '.vercel.app', '.railway.app']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '.vercel.app', '.railway.app']
 
 
 # Application definition
@@ -98,20 +98,9 @@ WSGI_APPLICATION = 'coinz_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE": "django.db.backends.postgresql",
-#         "OPTIONS": {
-#             "service": "mydatabase",
-#             "passfile": BASE_DIR / ".my_pgpass",
-#         },
-#     }
-# }
-
 DATABASES = {
     'default': {
         "ENGINE": "django.db.backends.postgresql",
-        # 'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.environ["PGDATABASE"],
         'USER': os.environ["PGUSER"],
         'PASSWORD': os.environ["PGPASSWORD"],
@@ -190,6 +179,7 @@ else:
     CORS_ALLOWED_ORIGINS = [
         "http://localhost:3000/",
         "http://127.0.0.1:3000/",
+        "https://coinz.eason.ch/"
     ]
 
 # APi Docs
