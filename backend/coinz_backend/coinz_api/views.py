@@ -20,6 +20,9 @@ class LedgerViewSet(viewsets.ModelViewSet):
         if user.is_authenticated:
             return Ledger.objects.filter(users__id=user.id)
         return Ledger.objects.none()
+    # Auto link ledger to user when user created a new ledger
+    def perform_create(self, serializer):
+        serializer.save(users=[self.request.user])
 
 class CurrencyViewSet(viewsets.ModelViewSet):
     queryset = Currency.objects.all().order_by('name')
