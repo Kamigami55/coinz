@@ -83,7 +83,7 @@ export function TransactionsTable({
                       ` (${transaction.amount} ${transaction.currency.abbreviation})`}
                   </td>
                   <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                    {transaction.ledger.name}
+                    {transaction?.ledger?.name}
                   </td>
                   <td className="relative whitespace-nowrap py-2 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
                     <a

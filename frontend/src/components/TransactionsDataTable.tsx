@@ -72,7 +72,7 @@ export function TransactionsDataTable({
       },
       {
         id: 'ledger',
-        accessorFn: ({ ledger }) => ledger.name,
+        accessorFn: ({ ledger }) => ledger?.name,
         header: 'Ledger',
       },
       {
