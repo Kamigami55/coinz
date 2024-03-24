@@ -1,0 +1,14 @@
+{
+  "builds": [
+    {
+      "src": "coinz_backend/wsgi.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "coinz_backend/wsgi.py"
+    }
+  ]
+}
