@@ -1,11 +1,16 @@
 import { coinzApi } from '@/lib/services/coinzApi/baseApi';
 
+export enum CategoryType {
+  EXPENSE = 'EXPENSE',
+  INCOME = 'INCOME',
+}
+
 interface CategoryResponse {
   id: number;
   name: string;
   color: string;
   icon: string;
-  type: string;
+  type: CategoryType;
   created_at: string;
   updated_at: string;
 }
@@ -15,7 +20,7 @@ export interface Category {
   name: string;
   color: string;
   icon: string;
-  type: string;
+  type: CategoryType;
   createdAt: string;
   updatedAt: string;
 }

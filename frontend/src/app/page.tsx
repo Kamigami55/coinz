@@ -24,7 +24,10 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getTransactionsToDisplay } from '@/lib/helper';
-import { useGetCategoriesQuery } from '@/lib/services/coinzApi/categories';
+import {
+  CategoryType,
+  useGetCategoriesQuery,
+} from '@/lib/services/coinzApi/categories';
 import { useGetCurrenciesQuery } from '@/lib/services/coinzApi/currencies';
 import { useGetCurrencyConversionsQuery } from '@/lib/services/coinzApi/currencyConversions';
 import { useGetLedgersQuery } from '@/lib/services/coinzApi/ledgers';
@@ -49,6 +52,10 @@ export default function HomePage() {
   const { data: transactions } = useGetTransactionsQuery();
   const { data: recurringBills } = useGetRecurringBillsQuery();
 
+  const displayCurrency = useMemo(() => {
+    return currencies?.find((currency) => currency.id === displayCurrencyId);
+  }, [currencies, displayCurrencyId]);
+
   const [addTransactionMutation, { isLoading: addTransactionLoading }] =
     useAddTransactionMutation();
 
@@ -62,7 +69,7 @@ export default function HomePage() {
       name: values.name,
       description: values.description,
       categoryId: values.categoryId,
-      date: values.date,
+      date: values.date.toISOString(),
     });
   };
 
@@ -84,31 +91,60 @@ export default function HomePage() {
     ledgers,
   ]);
 
+  const totalExpenses = useMemo(() => {
+    return transactionsToDisplay
+      ?.filter(
+        (transaction) => transaction.category.type === CategoryType.EXPENSE
+      )
+      .reduce((acc, transaction) => {
+        return acc + transaction.amountInDisplayCurrency;
+      }, 0);
+  }, [transactionsToDisplay]);
+
+  const totalIncome = useMemo(() => {
+    return transactionsToDisplay
+      ?.filter(
+        (transaction) => transaction.category.type === CategoryType.INCOME
+      )
+      .reduce((acc, transaction) => {
+        return acc + transaction.amountInDisplayCurrency;
+      }, 0);
+  }, [transactionsToDisplay]);
+
   return (
     <div className="flex flex-col gap-4 p-4 md:gap-8 md:p-8">
       <div className="grid gap-4 md:grid-cols-2 md:gap-8 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">
+              Total Expenses
+            </CardTitle>
             <DollarSign className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-2xl font-bold">
+              {displayCurrency?.symbol}
+              {totalExpenses}
+            </div>
+            {/* <p className="text-xs text-muted-foreground">
               +20.1% from last month
-            </p>
+            </p> */}
           </CardContent>
         </Card>
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Income</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-2xl font-bold">
+              {displayCurrency?.symbol}
+              {totalIncome}
+            </div>
+            {/* <p className="text-xs text-muted-foreground">
               +180.1% from last month
-            </p>
+            </p> */}
           </CardContent>
         </Card>
         <Card>
