@@ -67,7 +67,7 @@ export function TransactionsTable({
                     )}
                   </td>
                   <td className="whitespace-nowrap px-2 py-2 text-sm font-medium text-gray-900">
-                    {transaction.category.icon} {transaction.category.name}
+                    {transaction.category?.icon} {transaction.category?.name}
                   </td>
                   <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-900">
                     {transaction.name}

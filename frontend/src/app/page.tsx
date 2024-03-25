@@ -95,7 +95,7 @@ export default function HomePage() {
   const totalExpenses = useMemo(() => {
     return transactionsToDisplay
       ?.filter(
-        (transaction) => transaction.category.type === CategoryType.EXPENSE
+        (transaction) => transaction?.category?.type === CategoryType.EXPENSE
       )
       .reduce((acc, transaction) => {
         return acc + transaction.amountInDisplayCurrency;
@@ -105,7 +105,7 @@ export default function HomePage() {
   const totalIncome = useMemo(() => {
     return transactionsToDisplay
       ?.filter(
-        (transaction) => transaction.category.type === CategoryType.INCOME
+        (transaction) => transaction?.category?.type === CategoryType.INCOME
       )
       .reduce((acc, transaction) => {
         return acc + transaction.amountInDisplayCurrency;

@@ -46,7 +46,7 @@ export function TransactionsDataTable({
       },
       {
         id: 'category',
-        accessorFn: ({ category }) => category.icon + ' ' + category.name,
+        accessorFn: ({ category }) => category?.icon + ' ' + category?.name,
         header: 'Category',
       },
       {
