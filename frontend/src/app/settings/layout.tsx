@@ -9,18 +9,6 @@ const NavbarItems = [
     name: 'Ledgers',
     href: '/settings/ledgers',
   },
-  {
-    name: 'Recurring Bills',
-    href: '/settings/recurring-bills',
-  },
-  {
-    name: 'Profile',
-    href: '/settings/profile',
-  },
-  {
-    name: 'Account',
-    href: '/settings/account',
-  },
 ];
 
 export default function SettingsLayout({
