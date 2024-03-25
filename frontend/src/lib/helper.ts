@@ -133,7 +133,7 @@ export function summarizeTransactionsByCategory(
   const formattedSummary = summary.map((data) => {
     return {
       ...data,
-      value: data.value.toFixed(displayCurrency.precision),
+      value: parseFloat(data.value.toFixed(displayCurrency.precision)),
     };
   });
 

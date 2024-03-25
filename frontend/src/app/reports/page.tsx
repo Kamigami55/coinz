@@ -70,11 +70,14 @@ export default function ReportsGeneralPage() {
 
   const incomeSummary = useMemo(() => {
     return summarizeTransactionsByCategory(incomeTransactions, displayCurrency);
-  }, [incomeTransactions]);
+  }, [incomeTransactions, displayCurrency]);
 
   const expenseSummary = useMemo(() => {
-    return summarizeTransactionsByCategory(expenseTransactions, displayCurrency);
-  }, [expenseTransactions]);
+    return summarizeTransactionsByCategory(
+      expenseTransactions,
+      displayCurrency
+    );
+  }, [expenseTransactions, displayCurrency]);
 
   const totalExpenses = useMemo(() => {
     return expenseTransactions?.reduce(
