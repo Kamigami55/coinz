@@ -76,7 +76,8 @@ export function getTransactionsToDisplay({
 }
 
 export function summarizeTransactionsByCategory(
-  transactions: TransactionToDisplay[]
+  transactions: TransactionToDisplay[],
+  displayCurrency: Currency
 ) {
   const summary = transactions.reduce(
     (
@@ -129,7 +130,14 @@ export function summarizeTransactionsByCategory(
     []
   );
 
-  return summary;
+  const formattedSummary = summary.map((data) => {
+    return {
+      ...data,
+      value: data.value.toFixed(displayCurrency.precision),
+    };
+  });
+
+  return formattedSummary;
 }
 
 export function formatCurrency(amount: number, currency: Currency) {
