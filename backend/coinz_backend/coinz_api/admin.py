@@ -11,21 +11,41 @@ class UsersAdmin(admin.ModelAdmin):
     inlines = [LedgerUserInline]
 
 class LedgerAdmin(admin.ModelAdmin):
-    list_display = ['name', 'owners']
+    list_display = ['name', 'owners', 'transaction_count']
+    list_filter = ['users']
     def owners(self, obj):
         return ', '.join([user.username for user in obj.users.all()])
+    def transaction_count(self, obj):
+        return obj.transactions.count()
     inlines = [LedgerUserInline]
 
 class TransactionAdmin(admin.ModelAdmin):
     list_display = ['name', 'amount', 'currency', 'ledger', 'category', 'date']
     list_filter = ['ledger', 'category', 'date', 'currency']
 
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['name', 'color', 'icon', 'type']
+    list_filter = ['type']
+
+class CurrencyAdmin(admin.ModelAdmin):
+    list_display = ['name', 'abbreviation', 'symbol', 'icon']
+
+class CurrencyConversionAdmin(admin.ModelAdmin):
+    list_display = ['__str__','from_currency', 'to_currency', 'rate']
+
+class UserSettingsAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'default_currency']
+
+class LedgerUserAdmin(admin.ModelAdmin):
+    list_display = ['__str__', 'user', 'ledger']
+    list_filter = ['user', 'ledger']
+
 admin.site.register(User, UsersAdmin)
 admin.site.register(Ledger, LedgerAdmin)
-admin.site.register(Currency)
-admin.site.register(CurrencyConversion)
-admin.site.register(Category)
+admin.site.register(Currency, CurrencyAdmin)
+admin.site.register(CurrencyConversion, CurrencyConversionAdmin)
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(RecurringBill)
 admin.site.register(Transaction, TransactionAdmin)
-admin.site.register(UserSettings)
-admin.site.register(LedgerUser)
+admin.site.register(UserSettings, UserSettingsAdmin)
+admin.site.register(LedgerUser, LedgerUserAdmin)
