@@ -24,8 +24,10 @@ class TransactionAdmin(admin.ModelAdmin):
     list_filter = ['ledger', 'category', 'date', 'currency']
 
 class CategoryAdmin(admin.ModelAdmin):
-    list_display = ['name', 'color', 'icon', 'type']
+    list_display = ['name', 'color', 'icon', 'type', 'transaction_count']
     list_filter = ['type']
+    def transaction_count(self, obj):
+        return obj.transaction_set.count()
 
 class CurrencyAdmin(admin.ModelAdmin):
     list_display = ['name', 'abbreviation', 'symbol', 'icon']
