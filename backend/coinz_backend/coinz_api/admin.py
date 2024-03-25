@@ -27,7 +27,7 @@ class CategoryAdmin(admin.ModelAdmin):
     list_display = ['name', 'color', 'icon', 'type', 'transaction_count']
     list_filter = ['type']
     def transaction_count(self, obj):
-        return obj.transaction_set.count()
+        return obj.transactions.count()
 
 class CurrencyAdmin(admin.ModelAdmin):
     list_display = ['name', 'abbreviation', 'symbol', 'icon', 'precision']
@@ -36,7 +36,7 @@ class CurrencyConversionAdmin(admin.ModelAdmin):
     list_display = ['__str__','from_currency', 'to_currency', 'rate']
 
 class UserSettingsAdmin(admin.ModelAdmin):
-    list_display = ['__str__', 'default_currency']
+    list_display = ['__str__', 'default_currency', 'display_currency']
 
 class LedgerUserAdmin(admin.ModelAdmin):
     list_display = ['__str__', 'user', 'ledger']

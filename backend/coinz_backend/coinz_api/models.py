@@ -56,12 +56,12 @@ class Category(models.Model):
 class RecurringBill(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE, related_name='recurring_bills')
     amount = models.FloatField()
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='recurring_bills')
     name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField(null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='recurring_bills')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -84,10 +84,10 @@ class RecurringBill(models.Model):
 class Transaction(models.Model):
     ledger = models.ForeignKey(Ledger, on_delete=models.CASCADE, related_name='transactions')
     amount = models.FloatField()
-    currency = models.ForeignKey(Currency, on_delete=models.CASCADE)
+    currency = models.ForeignKey(Currency, on_delete=models.CASCADE, related_name='transactions')
     name = models.CharField(max_length=255, null=True, blank=True)
     description = models.TextField(null=True, blank=True)
-    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True)
+    category = models.ForeignKey(Category, on_delete=models.SET_NULL, null=True, blank=True, related_name='transactions')
     date = models.DateTimeField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -97,7 +97,8 @@ class Transaction(models.Model):
 
 class UserSettings(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='settings')
-    default_currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True)
+    default_currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True, related_name='default_currency')
+    display_currency = models.ForeignKey(Currency, on_delete=models.SET_NULL, null=True, blank=True, related_name='display_currency')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self) -> str:
