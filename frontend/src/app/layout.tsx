@@ -13,38 +13,35 @@ import { StoreProvider } from '@/components/StoreProvider';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Timez - Time Zone Converter',
-  description:
-    'Easily convert time between different timezones and compare overlapping time periods.',
-  metadataBase: new URL('https://timez.eason.ch'),
+  title: 'Coinz - Expense Tracker',
+  description: 'Easily track your expenses and income in a single place.',
+  metadataBase: new URL('https://coinz.eason.ch'),
   openGraph: {
-    title: 'Timez - Time Zone Converter',
-    description:
-      'Easily convert time between different timezones and compare overlapping time periods.',
-    url: 'https://timez.eason.ch',
-    siteName: 'Timez',
+    title: 'Coinz - Expense Tracker',
+    description: 'Easily track your expenses and income in a single place.',
+    url: 'https://coinz.eason.ch',
+    siteName: 'Coinz',
     locale: 'en_US',
     type: 'website',
     images: [
       {
-        url: 'https://timez.eason.ch/og.png',
+        url: 'https://coinz.eason.ch/og.png',
         width: 1041,
         height: 662,
-        alt: 'Timez - Time Zone Converter',
+        alt: 'Coinz - Expense Tracker',
       },
     ],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'Timez - Time Zone Converter',
-    description:
-      'Easily convert time between different timezones and compare overlapping time periods.',
+    title: 'Coinz - Expense Tracker',
+    description: 'Easily track your expenses and income in a single place.',
     images: [
       {
-        url: 'https://timez.eason.ch/og.png',
+        url: 'https://coinz.eason.ch/og.png',
         width: 1041,
         height: 662,
-        alt: 'Timez - Time Zone Converter',
+        alt: 'Coinz - Expense Tracker',
       },
     ],
     creator: '@EasonChang_me',
