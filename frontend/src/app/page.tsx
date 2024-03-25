@@ -9,7 +9,7 @@ import {
   AddTransactionForm,
   addTransactionFormSchema,
 } from '@/components/AddTransactionForm';
-import { TransactionsTable } from '@/components/TransactionsTable';
+import { TransactionsDataTable } from '@/components/TransactionsDataTable';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -147,7 +147,11 @@ export default function HomePage() {
             </Button>
           </CardHeader>
           <CardContent>
-            <TransactionsTable transactionsToDisplay={transactionsToDisplay} />
+            <TransactionsDataTable
+              transactionsToDisplay={transactionsToDisplay}
+              onUpdateTransaction={() => {}}
+              onDeleteTransaction={() => {}}
+            />
           </CardContent>
         </Card>
 
