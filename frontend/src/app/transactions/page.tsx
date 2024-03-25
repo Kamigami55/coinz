@@ -78,6 +78,7 @@ export default function TransactionsPage() {
       categoryId: values.categoryId,
       date: values.date.toISOString(),
     });
+    refetchTransactions();
   };
   // ./Add related logic
 

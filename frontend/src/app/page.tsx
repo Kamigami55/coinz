@@ -38,7 +38,8 @@ export default function HomePage() {
   const { data: categories } = useGetCategoriesQuery();
   const { data: userSetting } = useGetUserSettingQuery();
   const { data: ledgers } = useGetLedgersQuery();
-  const { data: transactions } = useGetTransactionsQuery();
+  const { data: transactions, refetch: refetchTransactions } =
+    useGetTransactionsQuery();
 
   const displayCurrencyId = userSetting?.displayCurrencyId;
   const displayCurrency = useMemo(() => {
@@ -60,6 +61,7 @@ export default function HomePage() {
       categoryId: values.categoryId,
       date: values.date.toISOString(),
     });
+    refetchTransactions();
   };
 
   const transactionsToDisplay = useMemo(() => {
