@@ -37,9 +37,7 @@ import { cn } from '@/lib/utils';
 
 export const addTransactionFormSchema = z.object({
   ledgerId: z.number(),
-  amount: z.number().min(0, {
-    message: 'Amount must be greater than 0.',
-  }),
+  amount: z.number().nonnegative(),
   currencyId: z.number(),
   name: z.string(),
   description: z.string(),

@@ -8,7 +8,11 @@ from coinz_api.serializers import UserSerializer, LedgerSerializer, CurrencySeri
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all().order_by('-date_joined')
     serializer_class = UserSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    pagination_class = None
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.id)
 
 class LedgerViewSet(viewsets.ModelViewSet):
     queryset = Ledger.objects.all().order_by('name')
@@ -29,19 +33,20 @@ class CurrencyViewSet(viewsets.ModelViewSet):
     queryset = Currency.objects.all().order_by('name')
     serializer_class = CurrencySerializer
     pagination_class = None
-    # permission_classes = [permissions.IsAuthenticated]
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all().order_by('name')
     serializer_class = CategorySerializer
     pagination_class = None
-    # permission_classes = [permissions.IsAuthenticated]
 
 class RecurringBillViewSet(viewsets.ModelViewSet):
     queryset = RecurringBill.objects.all().order_by('name')
     serializer_class = RecurringBillSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
     pagination_class = None
-    # permission_classes = [permissions.IsAuthenticated]
+    def get_queryset(self):
+        return RecurringBill.objects.filter(ledger__users__id=self.request.user.id)
 
 class TransactionViewSet(viewsets.ModelViewSet):
     queryset = Transaction.objects.all().order_by('name')
@@ -60,10 +65,13 @@ class UserSettingsViewSet(viewsets.ModelViewSet):
     # order by user join date
     queryset = UserSettings.objects.all().order_by('-user__date_joined')
     serializer_class = UserSettingsSerializer
-    # permission_classes = [permissions.IsAuthenticated]
+    permission_classes = [permissions.IsAuthenticated]
+    authentication_classes = [JWTAuthentication]
+    pagination_class = None
+    def get_queryset(self):
+        return UserSettings.objects.filter(user__id=self.request.user.id)
 
 class CurrencyConversionViewSet(viewsets.ModelViewSet):
     queryset = CurrencyConversion.objects.all().order_by('updated_at')
     serializer_class = CurrencyConversionSerializer
     pagination_class = None
-    # permission_classes = [permissions.IsAuthenticated]

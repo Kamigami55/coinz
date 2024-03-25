@@ -16,20 +16,16 @@ export interface User {
   lastName: string;
 }
 
-interface GetUserQueryParams {
-  userId: string;
-}
-
 const coinzApiWithUsers = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
-    getUser: builder.query<User, GetUserQueryParams>({
-      query: ({ userId }) => `/users/${userId}/`,
-      transformResponse: (response: UserResponse) => ({
-        id: response.id,
-        username: response.username,
-        email: response.email,
-        firstName: response.first_name,
-        lastName: response.last_name,
+    getUser: builder.query<User, void>({
+      query: () => `/users/`,
+      transformResponse: (response: UserResponse[]) => ({
+        id: response?.[0]?.id,
+        username: response?.[0]?.username,
+        email: response?.[0]?.email,
+        firstName: response?.[0]?.first_name,
+        lastName: response?.[0]?.last_name,
       }),
     }),
   }),

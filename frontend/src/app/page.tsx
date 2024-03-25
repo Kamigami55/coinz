@@ -32,27 +32,21 @@ import {
 import { useGetCurrenciesQuery } from '@/lib/services/coinzApi/currencies';
 import { useGetCurrencyConversionsQuery } from '@/lib/services/coinzApi/currencyConversions';
 import { useGetLedgersQuery } from '@/lib/services/coinzApi/ledgers';
-import { useGetRecurringBillsQuery } from '@/lib/services/coinzApi/recurringBills';
 import {
   useAddTransactionMutation,
   useGetTransactionsQuery,
 } from '@/lib/services/coinzApi/transactions';
-import { useGetUserQuery } from '@/lib/services/coinzApi/users';
 import { useGetUserSettingQuery } from '@/lib/services/coinzApi/userSettings';
 
 export default function HomePage() {
-  const userId = '1';
-  const displayCurrencyId = 1;
-
   const { data: currencies } = useGetCurrenciesQuery();
   const { data: currencyConversions } = useGetCurrencyConversionsQuery();
   const { data: categories } = useGetCategoriesQuery();
-  const { data: userSetting } = useGetUserSettingQuery({ userId });
-  const { data: user } = useGetUserQuery({ userId });
+  const { data: userSetting } = useGetUserSettingQuery();
   const { data: ledgers } = useGetLedgersQuery();
   const { data: transactions } = useGetTransactionsQuery();
-  const { data: recurringBills } = useGetRecurringBillsQuery();
 
+  const displayCurrencyId = userSetting?.displayCurrencyId;
   const displayCurrency = useMemo(() => {
     return currencies?.find((currency) => currency.id === displayCurrencyId);
   }, [currencies, displayCurrencyId]);
@@ -125,7 +119,7 @@ export default function HomePage() {
           <CardContent>
             <div className="text-2xl font-bold">
               {displayCurrency?.symbol}
-              {totalExpenses}
+              {totalExpenses.toFixed(displayCurrency?.precision)}
             </div>
             {/* <p className="text-xs text-muted-foreground">
               +20.1% from last month
@@ -141,7 +135,7 @@ export default function HomePage() {
           <CardContent>
             <div className="text-2xl font-bold">
               {displayCurrency?.symbol}
-              {totalIncome}
+              {totalIncome.toFixed(displayCurrency?.precision)}
             </div>
             {/* <p className="text-xs text-muted-foreground">
               +180.1% from last month

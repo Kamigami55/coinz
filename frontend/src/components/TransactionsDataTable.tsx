@@ -61,8 +61,8 @@ export function TransactionsDataTable({
         accessorKey: 'amountInDisplayCurrency',
         header: 'Amount',
         cell: ({ row }) => {
-          const textInDisplayCurrency = `${row.original.amountInDisplayCurrency} ${row.original.displayCurrency.abbreviation}`;
-          const textInOriginalCurrency = `${row.original.amount} ${row.original.currency.abbreviation}`;
+          const textInDisplayCurrency = `${row.original.amountInDisplayCurrency.toFixed(row.original.displayCurrency.precision)} ${row.original.displayCurrency.abbreviation}`;
+          const textInOriginalCurrency = `${row.original.amount.toFixed(row.original.currency.precision)} ${row.original.currency.abbreviation}`;
           if (row.original.displayCurrency.id === row.original.currencyId) {
             return textInDisplayCurrency;
           } else {
@@ -78,8 +78,6 @@ export function TransactionsDataTable({
       {
         id: 'actions',
         cell: ({ row }) => {
-          // const payment = row.original;
-
           return (
             <DropdownMenu>
               <DropdownMenuTrigger asChild>

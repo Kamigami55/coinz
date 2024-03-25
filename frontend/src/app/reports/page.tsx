@@ -16,15 +16,17 @@ import { useGetCurrenciesQuery } from '@/lib/services/coinzApi/currencies';
 import { useGetCurrencyConversionsQuery } from '@/lib/services/coinzApi/currencyConversions';
 import { useGetLedgersQuery } from '@/lib/services/coinzApi/ledgers';
 import { useGetTransactionsQuery } from '@/lib/services/coinzApi/transactions';
+import { useGetUserSettingQuery } from '@/lib/services/coinzApi/userSettings';
 
 export default function ReportsGeneralPage() {
-  const displayCurrencyId = 1;
-
+  const { data: userSetting } = useGetUserSettingQuery();
   const { data: currencies } = useGetCurrenciesQuery();
   const { data: currencyConversions } = useGetCurrencyConversionsQuery();
   const { data: categories } = useGetCategoriesQuery();
   const { data: ledgers } = useGetLedgersQuery();
   const { data: transactions } = useGetTransactionsQuery();
+
+  const displayCurrencyId = userSetting?.displayCurrencyId;
 
   const transactionsToDisplay = useMemo(() => {
     return getTransactionsToDisplay({
@@ -67,7 +69,11 @@ export default function ReportsGeneralPage() {
             {
               id: category.name,
               label: category.name,
-              value: transaction.amountInDisplayCurrency,
+              value: parseFloat(
+                transaction.amountInDisplayCurrency.toFixed(
+                  transaction.displayCurrency.precision
+                )
+              ),
               color: category.color,
             },
           ];
@@ -77,7 +83,13 @@ export default function ReportsGeneralPage() {
             if (data.id === category.name) {
               return {
                 ...data,
-                value: data.value + transaction.amountInDisplayCurrency,
+                value:
+                  data.value +
+                  parseFloat(
+                    transaction.amountInDisplayCurrency.toFixed(
+                      transaction.displayCurrency.precision
+                    )
+                  ),
               };
             }
             return data;

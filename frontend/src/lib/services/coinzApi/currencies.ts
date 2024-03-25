@@ -6,6 +6,7 @@ interface CurrencyResponse {
   abbreviation: string;
   symbol: string;
   icon: string;
+  precision: number;
 }
 
 export interface Currency {
@@ -14,6 +15,7 @@ export interface Currency {
   abbreviation: string;
   symbol: string;
   icon: string;
+  precision: number;
 }
 
 const coinzApiWithCurrencies = coinzApi.injectEndpoints({
@@ -29,6 +31,7 @@ const coinzApiWithCurrencies = coinzApi.injectEndpoints({
               abbreviation: currency.abbreviation,
               symbol: currency.symbol,
               icon: currency.icon,
+              precision: currency.precision,
             }) as Currency
         );
         return formattedResponse;

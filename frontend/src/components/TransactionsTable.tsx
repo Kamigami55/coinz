@@ -76,11 +76,15 @@ export function TransactionsTable({
                     {transaction.description}
                   </td>
                   <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
-                    {transaction.amountInDisplayCurrency}{' '}
+                    {transaction.amountInDisplayCurrency.toFixed(
+                      transaction.displayCurrency.precision
+                    )}{' '}
                     {transaction.displayCurrency.abbreviation}
                     {transaction.displayCurrency.id !==
                       transaction.currencyId &&
-                      ` (${transaction.amount} ${transaction.currency.abbreviation})`}
+                      ` (${transaction.amount.toFixed(
+                        transaction.currency.precision
+                      )} ${transaction.currency.abbreviation})`}
                   </td>
                   <td className="whitespace-nowrap px-2 py-2 text-sm text-gray-500">
                     {transaction?.ledger?.name}
