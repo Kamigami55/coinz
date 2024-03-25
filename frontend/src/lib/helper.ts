@@ -74,3 +74,68 @@ export function getTransactionsToDisplay({
     } as TransactionToDisplay;
   });
 }
+
+export function summarizeTransactionsByCategory(
+  transactions: TransactionToDisplay[]
+) {
+  const summary = transactions.reduce(
+    (
+      acc: {
+        id: string;
+        label: string;
+        value: number;
+        color: string;
+      }[],
+      transaction
+    ) => {
+      const category = transaction.category;
+      if (!category) {
+        return acc;
+      }
+      const data = acc.find((data) => data.id === category.name);
+      if (!data) {
+        return [
+          ...acc,
+          {
+            id: category.name,
+            label: category.name,
+            value: parseFloat(
+              transaction.amountInDisplayCurrency.toFixed(
+                transaction.displayCurrency.precision
+              )
+            ),
+            color: category.color,
+          },
+        ];
+      }
+      return [
+        ...acc.map((data) => {
+          if (data.id === category.name) {
+            return {
+              ...data,
+              value:
+                data.value +
+                parseFloat(
+                  transaction.amountInDisplayCurrency.toFixed(
+                    transaction.displayCurrency.precision
+                  )
+                ),
+            };
+          }
+          return data;
+        }),
+      ];
+    },
+    []
+  );
+
+  return summary;
+}
+
+export function formatCurrency(amount: number, currency: Currency) {
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: currency?.abbreviation ?? 'USD',
+    maximumFractionDigits: currency?.precision ?? 2,
+  }).format(amount);
+}

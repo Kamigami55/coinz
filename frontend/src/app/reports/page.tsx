@@ -10,8 +10,15 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { getTransactionsToDisplay, TransactionToDisplay } from '@/lib/helper';
-import { useGetCategoriesQuery } from '@/lib/services/coinzApi/categories';
+import {
+  formatCurrency,
+  getTransactionsToDisplay,
+  summarizeTransactionsByCategory,
+} from '@/lib/helper';
+import {
+  CategoryType,
+  useGetCategoriesQuery,
+} from '@/lib/services/coinzApi/categories';
 import { useGetCurrenciesQuery } from '@/lib/services/coinzApi/currencies';
 import { useGetCurrencyConversionsQuery } from '@/lib/services/coinzApi/currencyConversions';
 import { useGetLedgersQuery } from '@/lib/services/coinzApi/ledgers';
@@ -27,6 +34,9 @@ export default function ReportsGeneralPage() {
   const { data: transactions } = useGetTransactionsQuery();
 
   const displayCurrencyId = userSetting?.displayCurrencyId;
+  const displayCurrency = useMemo(() => {
+    return currencies?.find((currency) => currency.id === displayCurrencyId);
+  }, [currencies, displayCurrencyId]);
 
   const transactionsToDisplay = useMemo(() => {
     return getTransactionsToDisplay({
@@ -46,69 +56,64 @@ export default function ReportsGeneralPage() {
     ledgers,
   ]);
 
-  // group by category, and sum up the amount
-  const transactionsSummary = useMemo(() => {
-    return transactionsToDisplay?.reduce(
-      (
-        acc: {
-          id: string;
-          label: string;
-          value: number;
-          color: string;
-        }[],
-        transaction: TransactionToDisplay
-      ) => {
-        const category = transaction.category;
-        if (!category) {
-          return acc;
-        }
-        const data = acc.find((data) => data.id === category.name);
-        if (!data) {
-          return [
-            ...acc,
-            {
-              id: category.name,
-              label: category.name,
-              value: parseFloat(
-                transaction.amountInDisplayCurrency.toFixed(
-                  transaction.displayCurrency.precision
-                )
-              ),
-              color: category.color,
-            },
-          ];
-        }
-        return [
-          ...acc.map((data) => {
-            if (data.id === category.name) {
-              return {
-                ...data,
-                value:
-                  data.value +
-                  parseFloat(
-                    transaction.amountInDisplayCurrency.toFixed(
-                      transaction.displayCurrency.precision
-                    )
-                  ),
-              };
-            }
-            return data;
-          }),
-        ];
-      },
-      []
+  const incomeTransactions = useMemo(() => {
+    return transactionsToDisplay?.filter(
+      (transaction) => transaction?.category?.type === CategoryType.INCOME
     );
   }, [transactionsToDisplay]);
+
+  const expenseTransactions = useMemo(() => {
+    return transactionsToDisplay?.filter(
+      (transaction) => transaction?.category?.type === CategoryType.EXPENSE
+    );
+  }, [transactionsToDisplay]);
+
+  const incomeSummary = useMemo(() => {
+    return summarizeTransactionsByCategory(incomeTransactions);
+  }, [incomeTransactions]);
+
+  const expenseSummary = useMemo(() => {
+    return summarizeTransactionsByCategory(expenseTransactions);
+  }, [expenseTransactions]);
+
+  const totalExpenses = useMemo(() => {
+    return expenseTransactions?.reduce(
+      (acc, transaction) => acc + transaction.amountInDisplayCurrency,
+      0
+    );
+  }, [expenseTransactions]);
+
+  const totalIncome = useMemo(() => {
+    return incomeTransactions?.reduce(
+      (acc, transaction) => acc + transaction.amountInDisplayCurrency,
+      0
+    );
+  }, [incomeTransactions]);
 
   return (
     <div className="grid gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>By Category</CardTitle>
-          <CardDescription>View transactions by category.</CardDescription>
+          <CardTitle>Expenses</CardTitle>
+          <CardDescription>
+            Total expenses:{' '}
+            <b>{formatCurrency(totalExpenses, displayCurrency)}</b>
+          </CardDescription>
         </CardHeader>
         <CardContent className="h-[500px]">
-          <PieChart data={transactionsSummary} />
+          <PieChart data={expenseSummary} />
+        </CardContent>
+      </Card>
+
+      <Card>
+        <CardHeader>
+          <CardTitle>Income</CardTitle>
+          <CardDescription>
+            Total income: <b>{formatCurrency(totalIncome, displayCurrency)}</b>
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="h-[500px]">
+          <PieChart data={incomeSummary} />
         </CardContent>
       </Card>
     </div>

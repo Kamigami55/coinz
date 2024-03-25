@@ -2,7 +2,7 @@ import { ActiveLink } from '@/components/ActiveLink';
 
 const NavbarItems = [
   {
-    name: 'General',
+    name: 'By Category',
     href: '/reports',
   },
 ];
