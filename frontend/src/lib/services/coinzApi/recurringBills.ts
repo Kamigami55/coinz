@@ -34,8 +34,8 @@ const coinzApiWithRecurringBills = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
     getRecurringBills: builder.query<RecurringBill[], void>({
       query: () => `/recurring_bills/`,
-      transformResponse: (response: { results: RecurringBillResponse[] }) => {
-        const formattedResponse = response.results.map(
+      transformResponse: (response: RecurringBillResponse[]) => {
+        const formattedResponse = response.map(
           (recurringBill: RecurringBillResponse) =>
             ({
               id: recurringBill.id,

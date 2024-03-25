@@ -15,6 +15,7 @@ class LedgerViewSet(viewsets.ModelViewSet):
     serializer_class = LedgerSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [JWTAuthentication]
+    pagination_class = None
     def get_queryset(self):
         user = self.request.user
         if user.is_authenticated:
@@ -27,16 +28,19 @@ class LedgerViewSet(viewsets.ModelViewSet):
 class CurrencyViewSet(viewsets.ModelViewSet):
     queryset = Currency.objects.all().order_by('name')
     serializer_class = CurrencySerializer
+    pagination_class = None
     # permission_classes = [permissions.IsAuthenticated]
 
 class CategoryViewSet(viewsets.ModelViewSet):
     queryset = Category.objects.all().order_by('name')
     serializer_class = CategorySerializer
+    pagination_class = None
     # permission_classes = [permissions.IsAuthenticated]
 
 class RecurringBillViewSet(viewsets.ModelViewSet):
     queryset = RecurringBill.objects.all().order_by('name')
     serializer_class = RecurringBillSerializer
+    pagination_class = None
     # permission_classes = [permissions.IsAuthenticated]
 
 class TransactionViewSet(viewsets.ModelViewSet):
@@ -44,6 +48,7 @@ class TransactionViewSet(viewsets.ModelViewSet):
     serializer_class = TransactionSerializer
     permission_classes = [permissions.IsAuthenticated]
     authentication_classes = [JWTAuthentication]
+    pagination_class = None
     def get_queryset(self):
         user = self.request.user
         if user.is_authenticated:
@@ -60,4 +65,5 @@ class UserSettingsViewSet(viewsets.ModelViewSet):
 class CurrencyConversionViewSet(viewsets.ModelViewSet):
     queryset = CurrencyConversion.objects.all().order_by('updated_at')
     serializer_class = CurrencyConversionSerializer
+    pagination_class = None
     # permission_classes = [permissions.IsAuthenticated]

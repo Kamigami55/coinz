@@ -20,8 +20,8 @@ const coinzApiWithCurrencies = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
     getCurrencies: builder.query<Currency[], void>({
       query: () => `/currencies/`,
-      transformResponse: (response: { results: CurrencyResponse[] }) => {
-        const formattedResponse = response.results.map(
+      transformResponse: (response: CurrencyResponse[]) => {
+        const formattedResponse = response.map(
           (currency: CurrencyResponse) =>
             ({
               id: currency.id,

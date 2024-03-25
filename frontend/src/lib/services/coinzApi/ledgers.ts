@@ -41,8 +41,8 @@ const coinzApiWithLedgers = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
     getLedgers: builder.query<Ledger[], void>({
       query: () => `/ledgers/`,
-      transformResponse: (response: { results: LedgerResponse[] }) => {
-        const formattedResponse = response.results.map(
+      transformResponse: (response: LedgerResponse[]) => {
+        const formattedResponse = response.map(
           (ledger: LedgerResponse) =>
             ({
               id: ledger.id,

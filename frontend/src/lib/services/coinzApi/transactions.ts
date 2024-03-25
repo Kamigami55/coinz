@@ -77,8 +77,8 @@ const coinzApiWithTransactions = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
     getTransactions: builder.query<Transaction[], void>({
       query: () => `/transactions/`,
-      transformResponse: (response: { results: TransactionResponse[] }) => {
-        const formattedResponse = response.results.map(
+      transformResponse: (response: TransactionResponse[]) => {
+        const formattedResponse = response.map(
           (transaction: TransactionResponse) =>
             ({
               id: transaction.id,

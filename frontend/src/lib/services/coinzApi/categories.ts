@@ -29,8 +29,8 @@ const coinzApiWithCategories = coinzApi.injectEndpoints({
   endpoints: (builder) => ({
     getCategories: builder.query<Category[], void>({
       query: () => `/categories/`,
-      transformResponse: (response: { results: CategoryResponse[] }) => {
-        const formattedResponse = response.results.map(
+      transformResponse: (response: CategoryResponse[]) => {
+        const formattedResponse = response.map(
           (category: CategoryResponse) =>
             ({
               id: category.id,
