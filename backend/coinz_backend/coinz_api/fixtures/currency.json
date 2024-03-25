@@ -6,7 +6,8 @@
       "name": "US Dollar",
       "abbreviation": "USD",
       "symbol": "$",
-      "icon": "🇺🇸"
+      "icon": "🇺🇸",
+      "precision": 2
     }
   },
   {
@@ -16,7 +17,8 @@
       "name": "Canadian Dollar",
       "abbreviation": "CAD",
       "symbol": "C$",
-      "icon": "🇨🇦"
+      "icon": "🇨🇦",
+      "precision": 2
     }
   },
   {
@@ -26,7 +28,8 @@
       "name": "New Taiwan Dollar",
       "abbreviation": "NTD",
       "symbol": "$",
-      "icon": "🇹🇼"
+      "icon": "🇹🇼",
+      "precision": 0
     }
   }
 ]

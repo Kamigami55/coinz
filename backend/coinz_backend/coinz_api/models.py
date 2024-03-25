@@ -23,6 +23,7 @@ class Currency(models.Model):
     abbreviation = models.CharField(max_length=255, unique=True)
     symbol = models.CharField(max_length=255)
     icon = models.CharField(max_length=255)
+    precision = models.IntegerField(default=0)
     def __str__(self) -> str:
         return self.abbreviation
 

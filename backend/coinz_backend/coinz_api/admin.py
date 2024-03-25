@@ -30,7 +30,7 @@ class CategoryAdmin(admin.ModelAdmin):
         return obj.transaction_set.count()
 
 class CurrencyAdmin(admin.ModelAdmin):
-    list_display = ['name', 'abbreviation', 'symbol', 'icon']
+    list_display = ['name', 'abbreviation', 'symbol', 'icon', 'precision']
 
 class CurrencyConversionAdmin(admin.ModelAdmin):
     list_display = ['__str__','from_currency', 'to_currency', 'rate']
