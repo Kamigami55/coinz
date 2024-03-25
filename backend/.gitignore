@@ -269,3 +269,5 @@ pyrightconfig.json
 .my_pgpass
 .pg_service.conf
 schema.yml
+*.csv
+*.ipynb
