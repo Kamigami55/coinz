@@ -13,7 +13,7 @@ from coinz_api.models import Transaction, Category, Currency, Ledger  # Adjust t
 # Def a translation dictionary to convert to english
 category_translation = {
     '娛樂': 'Entertainment',
-    '生產力': 'Production',
+    '生產力': 'Productivity',
     '交通': 'Transportation',
     '生活': 'Life',
     '食物': 'Food',
