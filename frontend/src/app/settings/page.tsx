@@ -1,49 +1,60 @@
-import { Button } from '@/components/ui/button';
+'use client';
+
+import { z } from 'zod';
+
 import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
+import {
+  UpdateUserSettingForm,
+  updateUserSettingFormSchema,
+} from '@/components/UpdateUserSettingForm';
+import { useGetCurrenciesQuery } from '@/lib/services/coinzApi/currencies';
+import {
+  useGetUserSettingQuery,
+  useUpdateUserSettingMutation,
+} from '@/lib/services/coinzApi/userSettings';
 
 export default function SettingsGeneralPage() {
+  const { data: userSetting, refetch: refetchUserSetting } =
+    useGetUserSettingQuery();
+  const { data: currencies } = useGetCurrenciesQuery();
+
+  const [updateUserSetting, { isLoading: isSubmitting }] =
+    useUpdateUserSettingMutation();
+
+  const handleUpdateUserSetting = async (
+    values: z.infer<typeof updateUserSettingFormSchema>
+  ) => {
+    await updateUserSetting({
+      id: userSetting?.id,
+      userId: userSetting?.userId,
+      displayCurrencyId: values.displayCurrencyId,
+    });
+    refetchUserSetting();
+  };
+
   return (
     <div className="grid gap-6">
       <Card>
         <CardHeader>
-          <CardTitle>Store Name</CardTitle>
+          <CardTitle>Display Currency</CardTitle>
           <CardDescription>
-            Used to identify your store in the marketplace.
+            The currency that you want to display on your Coinz.
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <form>
-            <Input placeholder="Store Name" />
-          </form>
+          <UpdateUserSettingForm
+            currencies={currencies}
+            displayCurrencyId={userSetting?.displayCurrencyId}
+            onSubmit={handleUpdateUserSetting}
+            isSubmitting={isSubmitting}
+          />
         </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <Button>Save</Button>
-        </CardFooter>
-      </Card>
-      <Card>
-        <CardHeader>
-          <CardTitle>Plugins Directory</CardTitle>
-          <CardDescription>
-            The directory within your project, in which your plugins are
-            located.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form className="flex flex-col gap-4">
-            <Input placeholder="Project Name" defaultValue="/content/plugins" />
-          </form>
-        </CardContent>
-        <CardFooter className="border-t px-6 py-4">
-          <Button>Save</Button>
-        </CardFooter>
       </Card>
     </div>
   );
